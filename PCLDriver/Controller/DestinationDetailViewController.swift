@@ -91,8 +91,8 @@ class DestinationDetailViewController: UIViewController, MKMapViewDelegate, CLLo
         directions.calculate { (response, error) in // Calculates route Using MKDirections
             //            error handling for unforseen problems such as User denying location access, or start point = end point etc.
             guard let response = response else {
-                if let error = error {
-                    print("Something is wrong :(")
+                if error != nil {
+                    print("Something is wrong :(" + error)
                 }
                 return
             }
