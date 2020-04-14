@@ -55,6 +55,14 @@ class DestinationDetailViewController: UIViewController, MKMapViewDelegate, CLLo
         }
     }
     
+     func loadOverlayForRegionWithLatitude(latitude: Double, longitude: Double)
+     {
+        let coordinates = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+        let circle = MKCircle(center: coordinates, radius: 300)
+       self.mapViewDisplay.setRegion(MKCoordinateRegion(center: coordinates, span: MKCoordinateSpan(latitudeDelta: 7, longitudeDelta: 7)), animated: true)
+       self.mapViewDisplay.addOverlay(circle)
+    }
+    
         
     override func viewDidLoad() {
         super.viewDidLoad()
