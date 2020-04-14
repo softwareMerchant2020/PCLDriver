@@ -181,15 +181,17 @@ class DestinationDetailViewController: UIViewController, MKMapViewDelegate, CLLo
         })
     }
     
-    
+    var positionStatus = Bool()
     func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion)
     {
+        positionStatus = true
         print("entered")
         postLocalNotifications(eventTitle: "entered Office")
     }
     
     func locationManager(_ manager: CLLocationManager, didExitRegion region: CLRegion)
     {
+        positionStatus = false
         print("exited")
         postLocalNotifications(eventTitle: "exited Office")
     }
