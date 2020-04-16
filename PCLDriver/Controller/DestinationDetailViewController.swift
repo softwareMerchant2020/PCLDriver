@@ -273,11 +273,29 @@ class DestinationDetailViewController: UIViewController, MKMapViewDelegate, CLLo
             if Error == nil{
                 do {
                     self.customerDetails = try JSONDecoder().decode([Customer].self, from: Data as! Data )
-                    print(self.customerDetails)
+                    self.createAddress()
                 } catch let JSONErr{
                     print(JSONErr.localizedDescription)
                 }
             }
         }
     }
+    
+    func createAddress()-> String
+    {
+        let streetAddress: String = (customerDetails?[0].StreetAddress ?? "this was empty ")
+        let city: String = (customerDetails?[0].City) ?? " this was empty"
+        let state: String = (customerDetails?[0].State) ?? " this was empty"
+        let ZIPint = (customerDetails?[0].Zip) ?? 0
+        let ZIP = String(ZIPint)
+        let Seperator: String = ", "
+        
+        
+        let addressToGeocode: String = (streetAddress+Seperator+state+Seperator+city+Seperator+ZIP)
+//        let addressToGeocodePart2: String = (addressToGeocodePart1+", "+customerDetails![0].State!+", ")
+//        let addressToGeocode: String = (addressToGeocodePart2+", "+String(customerDetails![0].Zip!))
+        return(addressToGeocode)
+    }
 }
+
+
