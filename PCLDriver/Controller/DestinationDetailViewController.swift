@@ -12,7 +12,6 @@ import CoreLocation
 
 class DestinationDetailViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDelegate, UNUserNotificationCenterDelegate
 {
-    let strings = Strings()
     var customerDetails:[Customer]?
     
     
@@ -269,8 +268,7 @@ class DestinationDetailViewController: UIViewController, MKMapViewDelegate, CLLo
     
     func getLocs(RouteNumber: Int)
     {
-        let JSONbody = ["RouteNumber":RouteNumber]
-        RestManager.APIData(url: strings.routesURL, httpMethod: RestManager.HttpMethod.post.self.rawValue, body: SerializedData(JSONObject: JSONbody)){
+        RestManager.APIData(url: baseURL + getRouteDetail + "?RouteNumber=" + String(RouteNumber), httpMethod: RestManager.HttpMethod.post.self.rawValue, body: nil){
             (Data, Error) in
             if Error == nil{
                 do {

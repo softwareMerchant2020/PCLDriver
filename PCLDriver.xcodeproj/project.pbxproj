@@ -18,7 +18,9 @@
 		EF057BD5243EC9BC0043D563 /* RouteTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = EF057BD3243EC9BC0043D563 /* RouteTableViewCell.xib */; };
 		EF057BD7243ED3000043D563 /* RouteListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF057BD6243ED3000043D563 /* RouteListViewController.swift */; };
 		EF057BD9243ED3770043D563 /* DestinationDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF057BD8243ED3770043D563 /* DestinationDetailViewController.swift */; };
+		F34659742448C4300006DC65 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = F34659732448C4300006DC65 /* Constants.swift */; };
 		F3659B2A2444D43B00CECEE8 /* RestManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3659B292444D43B00CECEE8 /* RestManager.swift */; };
+		F3659B3224461B7C00CECEE8 /* CommonFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3659B3124461B7C00CECEE8 /* CommonFunctions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -35,7 +37,9 @@
 		EF057BD3243EC9BC0043D563 /* RouteTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RouteTableViewCell.xib; sourceTree = "<group>"; };
 		EF057BD6243ED3000043D563 /* RouteListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteListViewController.swift; sourceTree = "<group>"; };
 		EF057BD8243ED3770043D563 /* DestinationDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DestinationDetailViewController.swift; sourceTree = "<group>"; };
+		F34659732448C4300006DC65 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		F3659B292444D43B00CECEE8 /* RestManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestManager.swift; sourceTree = "<group>"; };
+		F3659B3124461B7C00CECEE8 /* CommonFunctions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonFunctions.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -49,13 +53,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		C089FEB924489F7000156972 /* Utils */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Utils;
-			sourceTree = "<group>";
-		};
 		EF057BB2243EC5640043D563 = {
 			isa = PBXGroup;
 			children = (
@@ -75,7 +72,7 @@
 		EF057BBD243EC5640043D563 /* PCLDriver */ = {
 			isa = PBXGroup;
 			children = (
-				C089FEB924489F7000156972 /* Utils */,
+				F3659B3024461B6100CECEE8 /* Utility */,
 				F3659B262444CE3A00CECEE8 /* Model */,
 				F3659B272444CE4B00CECEE8 /* View */,
 				F3659B282444CE5500CECEE8 /* Controller */,
@@ -115,6 +112,15 @@
 				EF057BC0243EC5640043D563 /* SceneDelegate.swift */,
 			);
 			path = Controller;
+			sourceTree = "<group>";
+		};
+		F3659B3024461B6100CECEE8 /* Utility */ = {
+			isa = PBXGroup;
+			children = (
+				F34659732448C4300006DC65 /* Constants.swift */,
+				F3659B3124461B7C00CECEE8 /* CommonFunctions.swift */,
+			);
+			path = Utility;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -191,8 +197,10 @@
 			files = (
 				EF057BC3243EC5640043D563 /* LoginViewController.swift in Sources */,
 				EF057BD4243EC9BC0043D563 /* RouteTableViewCell.swift in Sources */,
+				F3659B3224461B7C00CECEE8 /* CommonFunctions.swift in Sources */,
 				EF057BBF243EC5640043D563 /* AppDelegate.swift in Sources */,
 				C089FEB824489ED800156972 /* Route.swift in Sources */,
+				F34659742448C4300006DC65 /* Constants.swift in Sources */,
 				F3659B2A2444D43B00CECEE8 /* RestManager.swift in Sources */,
 				EF057BD7243ED3000043D563 /* RouteListViewController.swift in Sources */,
 				EF057BD9243ED3770043D563 /* DestinationDetailViewController.swift in Sources */,
