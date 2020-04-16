@@ -273,7 +273,6 @@ class DestinationDetailViewController: UIViewController, MKMapViewDelegate, CLLo
             if Error == nil{
                 do {
                     self.customerDetails = try JSONDecoder().decode([Customer].self, from: Data as! Data )
-                    self.createAddress()
                 } catch let JSONErr{
                     print(JSONErr.localizedDescription)
                 }
