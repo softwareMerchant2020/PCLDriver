@@ -12,6 +12,9 @@ import CoreLocation
 
 class DestinationDetailViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDelegate, UNUserNotificationCenterDelegate
 {
+    let strings = Strings()
+    var customerDetails:[Customer]?
+    
     
     @IBOutlet weak var mapViewDisplay: MKMapView!
     var myCurrentLoc: CLLocationCoordinate2D?
@@ -55,17 +58,18 @@ class DestinationDetailViewController: UIViewController, MKMapViewDelegate, CLLo
         }
     }
     
-     func loadOverlayForRegionWithLatitude(latitude: Double, longitude: Double)
-     {
+    func loadOverlayForRegionWithLatitude(latitude: Double, longitude: Double)
+    {
         let coordinates = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
         let circle = MKCircle(center: coordinates, radius: 300)
-       self.mapViewDisplay.setRegion(MKCoordinateRegion(center: coordinates, span: MKCoordinateSpan(latitudeDelta: 7, longitudeDelta: 7)), animated: true)
-       self.mapViewDisplay.addOverlay(circle)
+        self.mapViewDisplay.setRegion(MKCoordinateRegion(center: coordinates, span: MKCoordinateSpan(latitudeDelta: 7, longitudeDelta: 7)), animated: true)
+        self.mapViewDisplay.addOverlay(circle)
     }
     
-        
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        getLocs(RouteNumber: 7)
         self.navigationController?.isNavigationBarHidden = false
         locationManager.delegate = self // Sets the delegate to self
         locationManager.desiredAccuracy = kCLLocationAccuracyBest // Sets the accuracy of the GPS to best in this case
@@ -78,7 +82,7 @@ class DestinationDetailViewController: UIViewController, MKMapViewDelegate, CLLo
         // Do any additional setup after loading the view.
         
         requestPermissionNotifications()
-
+        
         let Acoord = CLLocationCoordinate2D(latitude: Ax, longitude: Ay)
         let Bcoord = CLLocationCoordinate2D(latitude: Bx, longitude: By)
         let Ccoord = CLLocationCoordinate2D(latitude: Cx, longitude: Cy)
@@ -94,21 +98,21 @@ class DestinationDetailViewController: UIViewController, MKMapViewDelegate, CLLo
         geoFenceRegion.notifyOnEntry = true
         geoFenceRegion.notifyOnExit = true
         locationManager.startMonitoring(for: geoFenceRegion)
-
+        
         
         
     }
     
-
+    
     /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
+     // MARK: - Navigation
+     
+     // In a storyboard-based application, you will often want to do a little preparation before navigation
+     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+     // Get the new view controller using segue.destination.
+     // Pass the selected object to the new view controller.
+     }
+     */
     
     func mapThis(originCoordinate: CLLocationCoordinate2D, destinationCord : CLLocationCoordinate2D)
     {
@@ -190,6 +194,7 @@ class DestinationDetailViewController: UIViewController, MKMapViewDelegate, CLLo
     }
     
     var positionStatus = Bool()
+    
     func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion)
     {
         positionStatus = true
@@ -258,7 +263,23 @@ class DestinationDetailViewController: UIViewController, MKMapViewDelegate, CLLo
         }
     }
     
+    //MARK: getting data for the routes
     
     
-
+    
+    func getLocs(RouteNumber: Int)
+    {
+        let JSONbody = ["RouteNumber":RouteNumber]
+        RestManager.APIData(url: strings.routesURL, httpMethod: RestManager.HttpMethod.post.self.rawValue, body: SerializedData(JSONObject: JSONbody)){
+            (Data, Error) in
+            if Error == nil{
+                do {
+                    self.customerDetails = try JSONDecoder().decode([Customer].self, from: Data as! Data )
+                    print(self.customerDetails)
+                } catch let JSONErr{
+                    print(JSONErr.localizedDescription)
+                }
+            }
+        }
+    }
 }

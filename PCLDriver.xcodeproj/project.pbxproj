@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C089FEB824489ED800156972 /* Route.swift in Sources */ = {isa = PBXBuildFile; fileRef = C089FEB724489ED800156972 /* Route.swift */; };
 		EF057BBF243EC5640043D563 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF057BBE243EC5640043D563 /* AppDelegate.swift */; };
 		EF057BC1243EC5640043D563 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF057BC0243EC5640043D563 /* SceneDelegate.swift */; };
 		EF057BC3243EC5640043D563 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF057BC2243EC5640043D563 /* LoginViewController.swift */; };
@@ -21,6 +22,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		C089FEB724489ED800156972 /* Route.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Route.swift; sourceTree = "<group>"; };
 		EF057BBB243EC5640043D563 /* PCLDriver.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PCLDriver.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EF057BBE243EC5640043D563 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		EF057BC0243EC5640043D563 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -47,6 +49,13 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		C089FEB924489F7000156972 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
 		EF057BB2243EC5640043D563 = {
 			isa = PBXGroup;
 			children = (
@@ -66,11 +75,11 @@
 		EF057BBD243EC5640043D563 /* PCLDriver */ = {
 			isa = PBXGroup;
 			children = (
+				C089FEB924489F7000156972 /* Utils */,
 				F3659B262444CE3A00CECEE8 /* Model */,
 				F3659B272444CE4B00CECEE8 /* View */,
 				F3659B282444CE5500CECEE8 /* Controller */,
 				EF057BBE243EC5640043D563 /* AppDelegate.swift */,
-				EF057BC0243EC5640043D563 /* SceneDelegate.swift */,
 				EF057BC4243EC5640043D563 /* Main.storyboard */,
 				EF057BC7243EC5680043D563 /* Assets.xcassets */,
 				EF057BC9243EC5680043D563 /* LaunchScreen.storyboard */,
@@ -83,6 +92,7 @@
 		F3659B262444CE3A00CECEE8 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				C089FEB724489ED800156972 /* Route.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -102,6 +112,7 @@
 				EF057BC2243EC5640043D563 /* LoginViewController.swift */,
 				EF057BD6243ED3000043D563 /* RouteListViewController.swift */,
 				EF057BD8243ED3770043D563 /* DestinationDetailViewController.swift */,
+				EF057BC0243EC5640043D563 /* SceneDelegate.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -181,6 +192,7 @@
 				EF057BC3243EC5640043D563 /* LoginViewController.swift in Sources */,
 				EF057BD4243EC9BC0043D563 /* RouteTableViewCell.swift in Sources */,
 				EF057BBF243EC5640043D563 /* AppDelegate.swift in Sources */,
+				C089FEB824489ED800156972 /* Route.swift in Sources */,
 				F3659B2A2444D43B00CECEE8 /* RestManager.swift in Sources */,
 				EF057BD7243ED3000043D563 /* RouteListViewController.swift in Sources */,
 				EF057BD9243ED3770043D563 /* DestinationDetailViewController.swift in Sources */,
