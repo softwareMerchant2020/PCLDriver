@@ -259,6 +259,18 @@ class DestinationDetailViewController: UIViewController, MKMapViewDelegate, CLLo
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         return CollectionStatus.statusList[row]
     }
+    func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView {
+        var pickerLabel: UILabel? = (view as? UILabel)
+        if pickerLabel == nil {
+            pickerLabel = UILabel()
+            pickerLabel?.font = UIFont.systemFont(ofSize: 17, weight: .semibold)
+            pickerLabel?.textAlignment = .center
+        }
+        pickerLabel?.text = CollectionStatus.statusList[row]
+        pickerLabel?.textColor = UIColor(named: "Your Color Name")
+
+        return pickerLabel!
+    }
     
     var locationAsArray = [CLLocationCoordinate2D]()
     
