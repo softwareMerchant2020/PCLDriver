@@ -13,11 +13,34 @@ import CoreLocation
 class DestinationDetailViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDelegate, UNUserNotificationCenterDelegate, UIPickerViewDelegate, UIPickerViewDataSource
 {
     
+    @IBOutlet weak var statusPicker: UIPickerView!
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        1
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        CollectionStatus.statusList.count
+    }
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        return CollectionStatus.statusList[row]
+    }
+    func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView {
+        var pickerLabel: UILabel? = (view as? UILabel)
+        if pickerLabel == nil {
+            pickerLabel = UILabel()
+            pickerLabel?.font = UIFont.systemFont(ofSize: 17, weight: .semibold)
+            pickerLabel?.textAlignment = .center
+        }
+        pickerLabel?.text = CollectionStatus.statusList[row]
+        pickerLabel?.textColor = UIColor(named: "Your Color Name")
+        
+        return pickerLabel!
+    }
+    
+    // MARK: Map stuff
     var customerDetails:[Customer]?
     var addressForGeocoding : String?
     var location1:CLLocation?
-    
-    @IBOutlet weak var statusPicker: UIPickerView!
     
     @IBOutlet weak var mapViewDisplay: MKMapView!
     var myCurrentLoc: CLLocationCoordinate2D?
@@ -31,7 +54,7 @@ class DestinationDetailViewController: UIViewController, MKMapViewDelegate, CLLo
     func loadOverlayForRegionWithLatitude(latitude: Double, longitude: Double)
     {
         let coordinates = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
-        let circle = MKCircle(center: coordinates, radius: 300)
+        let circle = MKCircle(center: coordinates, radius: 100)
         self.mapViewDisplay.setRegion(MKCoordinateRegion(center: coordinates, span: MKCoordinateSpan(latitudeDelta: 7, longitudeDelta: 7)), animated: true)
         self.mapViewDisplay.addOverlay(circle)
     }
@@ -39,8 +62,8 @@ class DestinationDetailViewController: UIViewController, MKMapViewDelegate, CLLo
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        statusPicker.delegate = self
         getLocs(RouteNumber: 11)
+        statusPicker.delegate = self
         self.navigationController?.isNavigationBarHidden = false
         locationManager.delegate = self // Sets the delegate to self
         locationManager.desiredAccuracy = kCLLocationAccuracyBest // Sets the accuracy of the GPS to best in this case
@@ -247,29 +270,6 @@ class DestinationDetailViewController: UIViewController, MKMapViewDelegate, CLLo
         
         let addressToGeocode: String = (streetAddress+Seperator+state+Seperator+city+Seperator+ZIP)
         return(addressToGeocode)
-    }
-    // Picker View Delegate methods
-    func numberOfComponents(in pickerView: UIPickerView) -> Int {
-           1
-       }
-       
-       func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        CollectionStatus.statusList.count
-       }
-    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return CollectionStatus.statusList[row]
-    }
-    func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView {
-        var pickerLabel: UILabel? = (view as? UILabel)
-        if pickerLabel == nil {
-            pickerLabel = UILabel()
-            pickerLabel?.font = UIFont.systemFont(ofSize: 17, weight: .semibold)
-            pickerLabel?.textAlignment = .center
-        }
-        pickerLabel?.text = CollectionStatus.statusList[row]
-        pickerLabel?.textColor = UIColor(named: "Your Color Name")
-
-        return pickerLabel!
     }
     
     var locationAsArray = [CLLocationCoordinate2D]()
