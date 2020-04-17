@@ -13,7 +13,8 @@ import CoreLocation
 class DestinationDetailViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDelegate, UNUserNotificationCenterDelegate
 {
     var customerDetails:[Customer]?
-    
+    var addressForGeocoding : String?
+    var location1:CLLocation?
     
     @IBOutlet weak var mapViewDisplay: MKMapView!
     var myCurrentLoc: CLLocationCoordinate2D?
@@ -21,41 +22,8 @@ class DestinationDetailViewController: UIViewController, MKMapViewDelegate, CLLo
     
     // the following coordinates are to be replaced with repsonses from CLgeodecoder
     
-    let GeoFencex = 40.079005462070526
-    let GeoFencey = -75.45921509767945
-    
-    // SM office
-    let Ax: Double = 40.04343
-    let Ay: Double = -75.24482
-    
-    // 30th street station
-    let Bx: Double = 40.334340
-    let By: Double = -79.841580
-    
-    // Drexel park
-    let Cx: Double = 40.223270
-    let Cy: Double = -76.883970
-    
-    // Upenn fine arts Library
-    let Dx: Double = 39.9517559
-    let Dy: Double = -75.192781
-    
     var tempVar: CLLocationCoordinate2D?
-    func getGeocodedCoordinate( addressString : String, completionHandler: @escaping(CLLocationCoordinate2D, NSError?) -> Void ) {
-        let geocoder = CLGeocoder()
-        geocoder.geocodeAddressString(addressString) { (placemarks, error) in
-            if error == nil {
-                if let placemark = placemarks?[0] {
-                    let location = placemark.location!
-                    
-                    completionHandler(location.coordinate, nil)
-                    self.tempVar = location.coordinate
-                }
-            }
-            
-            completionHandler(kCLLocationCoordinate2DInvalid, error as NSError?)
-        }
-    }
+    
     
     func loadOverlayForRegionWithLatitude(latitude: Double, longitude: Double)
     {
@@ -68,7 +36,8 @@ class DestinationDetailViewController: UIViewController, MKMapViewDelegate, CLLo
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        getLocs(RouteNumber: 7)
+        getLocs(RouteNumber: 11)
+        
         self.navigationController?.isNavigationBarHidden = false
         locationManager.delegate = self // Sets the delegate to self
         locationManager.desiredAccuracy = kCLLocationAccuracyBest // Sets the accuracy of the GPS to best in this case
@@ -81,25 +50,6 @@ class DestinationDetailViewController: UIViewController, MKMapViewDelegate, CLLo
         // Do any additional setup after loading the view.
         
         requestPermissionNotifications()
-        
-        let Acoord = CLLocationCoordinate2D(latitude: Ax, longitude: Ay)
-        let Bcoord = CLLocationCoordinate2D(latitude: Bx, longitude: By)
-        let Ccoord = CLLocationCoordinate2D(latitude: Cx, longitude: Cy)
-        let Dcoord = CLLocationCoordinate2D(latitude: Dx, longitude: Dy)
-        let annotArr = [["title":"center", "latitude":GeoFencex, "longitude": GeoFencey]] //[["title": "location 1", "latitude": Ax, "longitude": Ay],["title": "location2", "latitude": Bx, "longitude": By],["title": "location 3", "latitude": Cx, "longitude": Cy],["title": "location4", "latitude": Dx, "longitude": Dy]]
-        createAnnot(locations: annotArr)
-        mapThis(originCoordinate: Acoord, destinationCord: Bcoord)
-        mapThis(originCoordinate: Bcoord, destinationCord: Ccoord)
-        mapThis(originCoordinate: Ccoord, destinationCord: Dcoord)
-        
-        let GeoFenceCenter = CLLocationCoordinate2DMake(GeoFencex, GeoFencey)
-        let geoFenceRegion = CLCircularRegion(center: GeoFenceCenter, radius: 300, identifier: "Office")
-        geoFenceRegion.notifyOnEntry = true
-        geoFenceRegion.notifyOnExit = true
-        locationManager.startMonitoring(for: geoFenceRegion)
-        
-        
-        
     }
     
     
@@ -208,7 +158,8 @@ class DestinationDetailViewController: UIViewController, MKMapViewDelegate, CLLo
         postLocalNotifications(eventTitle: "exited Office")
     }
     
-    func requestPermissionNotifications(){
+    func requestPermissionNotifications()
+    {
         let application =  UIApplication.shared
         
         if #available(iOS 10.0, *) {
@@ -273,6 +224,7 @@ class DestinationDetailViewController: UIViewController, MKMapViewDelegate, CLLo
             if Error == nil{
                 do {
                     self.customerDetails = try JSONDecoder().decode([Customer].self, from: Data as! Data )
+                    self.getAllCoordsForRoute()
                 } catch let JSONErr{
                     print(JSONErr.localizedDescription)
                 }
@@ -280,21 +232,81 @@ class DestinationDetailViewController: UIViewController, MKMapViewDelegate, CLLo
         }
     }
     
-    func createAddress()-> String
+    func createAddress(entry: Int)-> String
     {
-        let streetAddress: String = (customerDetails?[0].StreetAddress ?? "this was empty ")
-        let city: String = (customerDetails?[0].City) ?? " this was empty"
-        let state: String = (customerDetails?[0].State) ?? " this was empty"
-        let ZIPint = (customerDetails?[0].Zip) ?? 0
+        let streetAddress: String = (customerDetails?[entry].StreetAddress ?? "this was empty ")
+        let city: String = (customerDetails?[entry].City) ?? " this was empty "
+        let state: String = (customerDetails?[entry].State) ?? " this was empty "
+        let ZIPint = (customerDetails?[entry].Zip) ?? 0
         let ZIP = String(ZIPint)
         let Seperator: String = ", "
         
         
         let addressToGeocode: String = (streetAddress+Seperator+state+Seperator+city+Seperator+ZIP)
-//        let addressToGeocodePart2: String = (addressToGeocodePart1+", "+customerDetails![0].State!+", ")
-//        let addressToGeocode: String = (addressToGeocodePart2+", "+String(customerDetails![0].Zip!))
         return(addressToGeocode)
     }
+    
+    var locationAsArray = [CLLocationCoordinate2D]()
+    
+    func getCoordinate( addressString : String,
+                        completionHandler: @escaping(CLLocationCoordinate2D, NSError?) -> Void )
+    {
+        
+        let geocoder = CLGeocoder()
+        geocoder.geocodeAddressString(addressString){ (placemarks, error) in
+            if error == nil {
+                if let placemark = placemarks?[0] {
+                    self.location1 = placemark.location!
+                    completionHandler(self.location1?.coordinate ?? CLLocationCoordinate2D(), nil)
+                    return
+                }
+            }
+            
+            completionHandler(kCLLocationCoordinate2DInvalid, error as NSError?)
+        }
+    }
+    
+    var listOfLocs = [CLLocationCoordinate2D]()
+    func getAllCoordsForRoute()
+    {
+        
+        var addressToAdd = String()
+        var coordsOfATA = [CLLocationCoordinate2D]()
+        var ListOfAddresses = [String]()
+        var coordToAppend = CLLocationCoordinate2D()
+        for i in Range(0...(customerDetails!.count-1))
+        {
+            addressToAdd = createAddress(entry: i)
+            ListOfAddresses.append(addressToAdd)
+        }
+        
+        for j in ListOfAddresses
+        {
+            getCoordinate(addressString: j) { (CLLocationCoordinate2D, NSError) in
+                coordToAppend = CLLocationCoordinate2D
+                coordsOfATA.append(coordToAppend)
+                print("yf",coordsOfATA)
+                self.listOfLocs = coordsOfATA
+                if self.listOfLocs.count>0
+                {
+                    for k in self.listOfLocs
+                    {
+                        let listOfDropOffs = [["title":"Pick Up Here!", "latitude":k.latitude, "longitude":k.longitude]]
+                        self.createAnnot(locations: listOfDropOffs)
+                        let geoFenceRegion = CLCircularRegion(center: k, radius: 100, identifier: "PickUp Location")
+                        geoFenceRegion.notifyOnEntry = true
+                        geoFenceRegion.notifyOnExit = true
+                        self.locationManager.startMonitoring(for: geoFenceRegion)
+                    }
+                    if self.listOfLocs.count>2
+                    {
+                        for z in Range(0...self.listOfLocs.count-2)
+                        {
+                            self.mapThis(originCoordinate: self.listOfLocs[z], destinationCord: self.listOfLocs[z+1])
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
-
-
