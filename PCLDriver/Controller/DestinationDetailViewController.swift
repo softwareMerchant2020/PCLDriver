@@ -10,11 +10,14 @@ import UIKit
 import MapKit
 import CoreLocation
 
-class DestinationDetailViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDelegate, UNUserNotificationCenterDelegate
+class DestinationDetailViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDelegate, UNUserNotificationCenterDelegate, UIPickerViewDelegate, UIPickerViewDataSource
 {
+    
     var customerDetails:[Customer]?
     var addressForGeocoding : String?
     var location1:CLLocation?
+    
+    @IBOutlet weak var statusPicker: UIPickerView!
     
     @IBOutlet weak var mapViewDisplay: MKMapView!
     var myCurrentLoc: CLLocationCoordinate2D?
@@ -36,8 +39,8 @@ class DestinationDetailViewController: UIViewController, MKMapViewDelegate, CLLo
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        statusPicker.delegate = self
         getLocs(RouteNumber: 11)
-        
         self.navigationController?.isNavigationBarHidden = false
         locationManager.delegate = self // Sets the delegate to self
         locationManager.desiredAccuracy = kCLLocationAccuracyBest // Sets the accuracy of the GPS to best in this case
@@ -244,6 +247,17 @@ class DestinationDetailViewController: UIViewController, MKMapViewDelegate, CLLo
         
         let addressToGeocode: String = (streetAddress+Seperator+state+Seperator+city+Seperator+ZIP)
         return(addressToGeocode)
+    }
+    // Picker View Delegate methods
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+           1
+       }
+       
+       func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        CollectionStatus.statusList.count
+       }
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        return CollectionStatus.statusList[row]
     }
     
     var locationAsArray = [CLLocationCoordinate2D]()

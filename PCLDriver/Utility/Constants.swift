@@ -25,3 +25,16 @@ let editRoute = "Route/EditRoute"
 let getVehicle = "vehicle/GetVehicle"
 let addVehicle = "vehicle/AddVehicle"
 let addUpdateTransactionStatus = "admin/AddUpdateTransactionStatus"
+
+enum CollectionStatus: String, Decodable, CaseIterable {
+    case notCollected = "NotCollected"
+    case collected = "Collected"
+    case rescheduled = "Rescheduled"
+    case missed = "Missed"
+    case closed = "Closed"
+    case other = "Other"
+
+    static var statusList: [String] {
+        return CollectionStatus.allCases.map { $0.rawValue }
+      }
+}

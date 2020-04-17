@@ -307,71 +307,64 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Merakey GermanTown" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DaQ-Eb-i3s">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Merakey GermanTown" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DaQ-Eb-i3s">
                                 <rect key="frame" x="20" y="64" width="374" height="20.5"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="5429 Germantown Ave, Philadelphia, PA 19140" lineBreakMode="wordWrap" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="s4v-JD-zEO">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="5429 Germantown Ave, Philadelphia, PA 19140" lineBreakMode="wordWrap" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="s4v-JD-zEO">
                                 <rect key="frame" x="20" y="104.5" width="374" height="20.5"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" red="0.071687940140000003" green="0.59607843140000005" blue="0.9020411532" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7tV-4V-jM4">
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7tV-4V-jM4">
                                 <rect key="frame" x="172.5" y="802" width="69" height="35"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" weight="heavy" pointSize="19"/>
                                 <state key="normal" title="Update">
                                     <color key="titleColor" red="0.42352941179999998" green="0.043137254899999998" blue="0.1450980392" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Number Of Specimen Collected" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nT7-o2-dzX">
-                                <rect key="frame" x="54" y="753" width="204.5" height="34"/>
+                            <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="100" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="0IV-gm-rmO">
+                                <rect key="frame" x="251" y="753" width="107" height="34"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="epU-qM-Y8P">
+                                <rect key="frame" x="20" y="135" width="374" height="448"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </mapView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Specimen Status" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Cct-c3-fUY">
+                                <rect key="frame" x="20" y="662" width="130" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <pickerView contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="SjN-Ik-4gy">
+                                <rect key="frame" x="173" y="604" width="186" height="137"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                            </pickerView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Number Of Specimen Collected" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nT7-o2-dzX">
+                                <rect key="frame" x="20" y="753" width="204.5" height="34"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="100" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="0IV-gm-rmO">
-                                <rect key="frame" x="266.5" y="753" width="91.5" height="34"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
-                            </textField>
-                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="epU-qM-Y8P">
-                                <rect key="frame" x="20" y="135" width="374" height="608"/>
-                            </mapView>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
-                        <constraints>
-                            <constraint firstItem="7tV-4V-jM4" firstAttribute="centerX" secondItem="NjU-rl-5WC" secondAttribute="centerX" id="1E1-Qn-y92"/>
-                            <constraint firstItem="NjU-rl-5WC" firstAttribute="trailing" secondItem="DaQ-Eb-i3s" secondAttribute="trailing" constant="20" id="6DO-AX-Z58"/>
-                            <constraint firstItem="DaQ-Eb-i3s" firstAttribute="top" secondItem="NjU-rl-5WC" secondAttribute="top" constant="20" id="9Wc-8o-pdP"/>
-                            <constraint firstItem="s4v-JD-zEO" firstAttribute="top" secondItem="DaQ-Eb-i3s" secondAttribute="bottom" constant="20" id="Auy-bY-Dyg"/>
-                            <constraint firstItem="epU-qM-Y8P" firstAttribute="leading" secondItem="NjU-rl-5WC" secondAttribute="leading" constant="20" id="AxT-Ua-xOh"/>
-                            <constraint firstItem="s4v-JD-zEO" firstAttribute="centerX" secondItem="NjU-rl-5WC" secondAttribute="centerX" id="DEA-ee-lCl"/>
-                            <constraint firstItem="DaQ-Eb-i3s" firstAttribute="leading" secondItem="NjU-rl-5WC" secondAttribute="leading" constant="20" id="Dw3-Gr-NpX"/>
-                            <constraint firstItem="NjU-rl-5WC" firstAttribute="trailing" secondItem="s4v-JD-zEO" secondAttribute="trailing" constant="20" id="HAI-Xq-eRC"/>
-                            <constraint firstItem="epU-qM-Y8P" firstAttribute="centerX" secondItem="NjU-rl-5WC" secondAttribute="centerX" id="Mw2-W6-3jH"/>
-                            <constraint firstItem="nT7-o2-dzX" firstAttribute="leading" secondItem="NjU-rl-5WC" secondAttribute="leading" constant="54" id="Rsb-7H-J99"/>
-                            <constraint firstItem="7tV-4V-jM4" firstAttribute="top" secondItem="0IV-gm-rmO" secondAttribute="bottom" constant="15" id="XIa-h0-my1"/>
-                            <constraint firstItem="s4v-JD-zEO" firstAttribute="leading" secondItem="NjU-rl-5WC" secondAttribute="leading" constant="20" id="Z0c-oE-FUD"/>
-                            <constraint firstItem="DaQ-Eb-i3s" firstAttribute="centerX" secondItem="NjU-rl-5WC" secondAttribute="centerX" id="Zai-DW-Hjb"/>
-                            <constraint firstItem="0IV-gm-rmO" firstAttribute="leading" secondItem="nT7-o2-dzX" secondAttribute="trailing" constant="8" id="fV4-Yo-T8c"/>
-                            <constraint firstItem="epU-qM-Y8P" firstAttribute="top" secondItem="s4v-JD-zEO" secondAttribute="bottom" constant="10" id="iFX-9H-8un"/>
-                            <constraint firstItem="NjU-rl-5WC" firstAttribute="trailing" secondItem="epU-qM-Y8P" secondAttribute="trailing" constant="20" id="j8v-hY-mCC"/>
-                            <constraint firstItem="nT7-o2-dzX" firstAttribute="bottom" secondItem="0IV-gm-rmO" secondAttribute="bottom" id="l4j-5u-sCy"/>
-                            <constraint firstItem="NjU-rl-5WC" firstAttribute="trailing" secondItem="0IV-gm-rmO" secondAttribute="trailing" constant="56" id="l7m-CT-NZa"/>
-                            <constraint firstItem="7tV-4V-jM4" firstAttribute="top" secondItem="nT7-o2-dzX" secondAttribute="bottom" constant="15" id="n2M-YJ-aka"/>
-                            <constraint firstItem="nT7-o2-dzX" firstAttribute="top" secondItem="0IV-gm-rmO" secondAttribute="top" id="rDd-lC-XTs"/>
-                            <constraint firstItem="0IV-gm-rmO" firstAttribute="leading" secondItem="nT7-o2-dzX" secondAttribute="trailing" constant="8" id="rv5-Wr-3vK"/>
-                            <constraint firstItem="NjU-rl-5WC" firstAttribute="bottom" secondItem="7tV-4V-jM4" secondAttribute="bottom" constant="25" id="tHo-UO-B6o"/>
-                            <constraint firstItem="nT7-o2-dzX" firstAttribute="top" secondItem="epU-qM-Y8P" secondAttribute="bottom" constant="10" id="tsr-Xd-JPv"/>
-                        </constraints>
                         <viewLayoutGuide key="safeArea" id="NjU-rl-5WC"/>
                     </view>
                     <navigationItem key="navigationItem" id="rdZ-EE-g0X"/>
                     <connections>
                         <outlet property="mapViewDisplay" destination="epU-qM-Y8P" id="EeG-km-qNc"/>
+                        <outlet property="statusPicker" destination="SjN-Ik-4gy" id="deF-C9-Sj4"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="LYQ-UW-yNr" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

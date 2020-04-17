@@ -22,7 +22,37 @@ class LoginViewController: UIViewController {
         self.navigationController?.setNavigationBarHidden(true, animated: true)
     }
     @IBAction func loginButtonClicked(_ sender: Any) {
-        self.performSegue(withIdentifier: "showroutedetails", sender: self)
+
+        if (phoneNumberField.text!.isEmpty || passwordField.text!.isEmpty) {
+            let alert = Utilities.getAlertControllerwith(title: "Required", message: "All fields are required", alertActionTitle: "Ok")
+            self.present(alert, animated: true, completion: nil)
+            
+        } else {
+            let jsonBody = [
+                "PhoneNumber": phoneNumberField.text,
+                "Password": passwordField.text
+            ]
+            RestManager.APIData(url: "https://pclwebapi.azurewebsites.net/api/driver/DriverLogin", httpMethod: RestManager.HttpMethod.post.self.rawValue, body: Utilities.SerializedData(JSONObject: jsonBody)){Data,Error in
+                if Error == nil {
+                    do {
+                        let resultData = try JSONDecoder().decode(RequestResult.self, from: Data as! Data)
+                            DispatchQueue.main.async {
+                                let alert = Utilities.getAlertControllerwith(title: "Login", message: resultData.Result, alertActionTitle: "Ok")
+                                self.present(alert, animated: true)
+                                self.performSegue(withIdentifier: "showroutedetails", sender: self)
+                        }
+                        
+                    } catch let JSONErr{
+                        DispatchQueue.main.async {
+                            let alert = Utilities.getAlertControllerwith(title: "Login", message: JSONErr.localizedDescription, alertActionTitle: "Ok")
+                            self.present(alert, animated: true)
+                        }
+                    }
+                }
+            }
+            self.performSegue(withIdentifier: "showroutedetails", sender: self)
+        }
+        
     }
    
     @IBAction func clearButtonClicked(_ sender: Any) {
