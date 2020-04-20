@@ -10,11 +10,11 @@ import Foundation
 
 struct Route: Decodable
 {
-    let RouteNo: Int
-    let RouteName: String
-    let DriverId: Int
-    let vehicleNo: String
-    var Customer: [Customer]
+    let RouteNo: Int?
+    let RouteName: String?
+    let DriverId: Int?
+    let vehicleNo: String?
+    var Customer: [Customer]?
 }
 
 struct Customer: Decodable

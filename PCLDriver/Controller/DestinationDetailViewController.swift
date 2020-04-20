@@ -38,9 +38,10 @@ class DestinationDetailViewController: UIViewController, MKMapViewDelegate, CLLo
     }
     
     // MARK: Map stuff
-    var customerDetails:[Customer]?
+    var routeDetails:[Route]?
     var addressForGeocoding : String?
     var location1:CLLocation?
+    var result: RequestResult?
     
     @IBOutlet weak var mapViewDisplay: MKMapView!
     var myCurrentLoc: CLLocationCoordinate2D?
@@ -62,7 +63,8 @@ class DestinationDetailViewController: UIViewController, MKMapViewDelegate, CLLo
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        getLocs(RouteNumber: 11)
+        getLocs(RouteNumber: 7)
+        print(routeDetails)
         statusPicker.delegate = self
         self.navigationController?.isNavigationBarHidden = false
         locationManager.delegate = self // Sets the delegate to self
@@ -143,6 +145,12 @@ class DestinationDetailViewController: UIViewController, MKMapViewDelegate, CLLo
         guard let locVal: CLLocationCoordinate2D = manager.location?.coordinate else { return }
         self.myCurrentLoc = locVal
         
+        
+        let delayTime = DispatchTime.now() + 180.0
+        print("one")
+        DispatchQueue.main.asyncAfter(deadline: delayTime, execute:{
+            self.sendDriverLoc(driverID: 3)})
+        
     }
     
     func postLocalNotifications(eventTitle:String)
@@ -151,7 +159,7 @@ class DestinationDetailViewController: UIViewController, MKMapViewDelegate, CLLo
         
         let content = UNMutableNotificationContent()
         content.title = eventTitle
-        content.body = "You've entered a new region"
+        content.body = "prepare to be spyed on by your boss"
         
         let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
         
@@ -174,14 +182,14 @@ class DestinationDetailViewController: UIViewController, MKMapViewDelegate, CLLo
     {
         positionStatus = true
         print("entered")
-        postLocalNotifications(eventTitle: "entered Office")
+        postLocalNotifications(eventTitle: "entered Pickup zone")
     }
     
     func locationManager(_ manager: CLLocationManager, didExitRegion region: CLRegion)
     {
         positionStatus = false
         print("exited")
-        postLocalNotifications(eventTitle: "exited Office")
+        postLocalNotifications(eventTitle: "exited Pickup zone")
     }
     
     func requestPermissionNotifications()
@@ -249,7 +257,7 @@ class DestinationDetailViewController: UIViewController, MKMapViewDelegate, CLLo
             (Data, Error) in
             if Error == nil{
                 do {
-                    self.customerDetails = try JSONDecoder().decode([Customer].self, from: Data as! Data )
+                    self.routeDetails = try JSONDecoder().decode([Route].self, from: Data as! Data )
                     self.getAllCoordsForRoute()
                 } catch let JSONErr{
                     print(JSONErr.localizedDescription)
@@ -258,12 +266,34 @@ class DestinationDetailViewController: UIViewController, MKMapViewDelegate, CLLo
         }
     }
     
+    func sendDriverLoc(driverID: Int)
+    {
+        let bodyParamsRaw = ["driverId": driverID, "Lat": Double(myCurrentLoc!.latitude), "log":Double(myCurrentLoc!.longitude)] as [String : Any]
+        let bodyParams = SerializedData(JSONObject: bodyParamsRaw)
+        
+        RestManager.APIData(url: baseURL + addDriverLocation, httpMethod: RestManager.HttpMethod.post.self.rawValue, body: bodyParams){
+            (Data, Error) in
+            if Error == nil{
+                do {
+                    self.result = try JSONDecoder().decode(RequestResult.self, from: Data as! Data )
+                    print(self.result)
+                } catch let JSONErr{
+                    print(JSONErr.localizedDescription)
+                }
+            }
+        }
+    }
+    
+    
+    
+    
+    
     func createAddress(entry: Int)-> String
     {
-        let streetAddress: String = (customerDetails?[entry].StreetAddress ?? "this was empty ")
-        let city: String = (customerDetails?[entry].City) ?? " this was empty "
-        let state: String = (customerDetails?[entry].State) ?? " this was empty "
-        let ZIPint = (customerDetails?[entry].Zip) ?? 0
+        let streetAddress: String = (routeDetails?[0].Customer?[entry].StreetAddress ?? "this was empty ")
+        let city: String = (routeDetails?[0].Customer?[entry].City) ?? " this was empty "
+        let state: String = (routeDetails?[0].Customer?[entry].State) ?? " this was empty "
+        let ZIPint = (routeDetails?[0].Customer?[entry].Zip) ?? 0
         let ZIP = String(ZIPint)
         let Seperator: String = ", "
         
@@ -277,7 +307,6 @@ class DestinationDetailViewController: UIViewController, MKMapViewDelegate, CLLo
     func getCoordinate( addressString : String,
                         completionHandler: @escaping(CLLocationCoordinate2D, NSError?) -> Void )
     {
-        
         let geocoder = CLGeocoder()
         geocoder.geocodeAddressString(addressString){ (placemarks, error) in
             if error == nil {
@@ -287,7 +316,6 @@ class DestinationDetailViewController: UIViewController, MKMapViewDelegate, CLLo
                     return
                 }
             }
-            
             completionHandler(kCLLocationCoordinate2DInvalid, error as NSError?)
         }
     }
@@ -300,23 +328,27 @@ class DestinationDetailViewController: UIViewController, MKMapViewDelegate, CLLo
         var coordsOfATA = [CLLocationCoordinate2D]()
         var ListOfAddresses = [String]()
         var coordToAppend = CLLocationCoordinate2D()
-        for i in Range(0...(customerDetails!.count-1))
+        for i in Range(0...(routeDetails![0].Customer!.count-1))
         {
+            print(i)
             addressToAdd = createAddress(entry: i)
             ListOfAddresses.append(addressToAdd)
         }
+        print("List of addresses",ListOfAddresses)
         
         for j in ListOfAddresses
         {
+            print(j)
             getCoordinate(addressString: j) { (CLLocationCoordinate2D, NSError) in
                 coordToAppend = CLLocationCoordinate2D
                 coordsOfATA.append(coordToAppend)
                 print("yf",coordsOfATA)
-                self.listOfLocs = coordsOfATA
-                if self.listOfLocs.count>0
+                print(ListOfAddresses.count)
+                if ListOfAddresses.count>0
                 {
-                    for k in self.listOfLocs
+                    for k in coordsOfATA
                     {
+                        print(k)
                         let listOfDropOffs = [["title":"Pick Up Here!", "latitude":k.latitude, "longitude":k.longitude]]
                         self.createAnnot(locations: listOfDropOffs)
                         let geoFenceRegion = CLCircularRegion(center: k, radius: 100, identifier: "PickUp Location")
@@ -324,11 +356,12 @@ class DestinationDetailViewController: UIViewController, MKMapViewDelegate, CLLo
                         geoFenceRegion.notifyOnExit = true
                         self.locationManager.startMonitoring(for: geoFenceRegion)
                     }
-                    if self.listOfLocs.count>2
+                    
+                    if coordsOfATA.count>2
                     {
-                        for z in Range(0...self.listOfLocs.count-2)
+                        for z in Range(0...coordsOfATA.count-2)
                         {
-                            self.mapThis(originCoordinate: self.listOfLocs[z], destinationCord: self.listOfLocs[z+1])
+                            self.mapThis(originCoordinate: coordsOfATA[z], destinationCord: coordsOfATA[z+1])
                         }
                     }
                 }
