@@ -12,4 +12,7 @@ struct RequestResult: Decodable{
     var Result: String
 }
 
+struct DriverRoute: Decodable {
+    var RouteNo: Int
+}
 

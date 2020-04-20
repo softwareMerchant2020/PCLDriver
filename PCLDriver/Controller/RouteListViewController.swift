@@ -9,26 +9,47 @@
 import UIKit
 
 class RouteListViewController: UIViewController {
-
+    var routeNumber:Int = 11
+    var customerDetails:[Customer] = [Customer]()
+    
+    
     @IBOutlet weak var routeListTableView: UITableView!
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationController?.isNavigationBarHidden = false
-        routeListTableView.delegate = self
-        routeListTableView.dataSource = self
-        routeListTableView.register(UINib(nibName: "RouteTableViewCell", bundle: .main), forCellReuseIdentifier: "RouteTableViewCell")
-        // Do any additional setup after loading the view.
+        loadApi()
     }
-
+    func loadApi() {
+        RestManager.APIData(url: baseURL + getRouteDetail + "?RouteNumber=" + String(routeNumber), httpMethod: RestManager.HttpMethod.post.self.rawValue, body: nil){
+            (Data, Error) in
+            if Error == nil{
+                do {
+                    self.customerDetails = try JSONDecoder().decode([Customer].self, from: Data as! Data )
+                    self.loadTableView()
+                } catch let JSONErr{
+                    print(JSONErr.localizedDescription)
+                }
+            }
+        }
+    }
+    func loadTableView() {
+        DispatchQueue.main.async {
+            self.routeListTableView.delegate = self
+            self.routeListTableView.dataSource = self
+            self.routeListTableView.register(UINib(nibName: "RouteTableViewCell", bundle: .main), forCellReuseIdentifier: "RouteTableViewCell")
+            self.routeListTableView.rowHeight = 102
+        }
+    }
 }
 extension RouteListViewController : UITableViewDelegate,UITableViewDataSource
 {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        3
+        self.customerDetails.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "RouteTableViewCell", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "RouteTableViewCell", for: indexPath) as! RouteTableViewCell
+        cell.setCellData(object: customerDetails[indexPath.row])
         return cell
         
     }

@@ -40,6 +40,7 @@ class SignUpViewController: UIViewController {
                             DispatchQueue.main.async {
                                 let alert = Utilities.getAlertControllerwith(title: "Sign Up", message: resultData.Result, alertActionTitle: "Ok")
                                 self.present(alert, animated: true)
+                                self.navigationController?.popViewController(animated: true)
                         }
                         
                     } catch let JSONErr{
