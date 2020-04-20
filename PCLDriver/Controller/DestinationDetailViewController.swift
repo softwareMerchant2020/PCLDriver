@@ -65,6 +65,8 @@ class DestinationDetailViewController: UIViewController, MKMapViewDelegate, CLLo
         super.viewDidLoad()
         getLocs(RouteNumber: 7)
         print(routeDetails)
+        logoutButton()
+        
         statusPicker.delegate = self
         self.navigationController?.isNavigationBarHidden = false
         locationManager.delegate = self // Sets the delegate to self
@@ -80,16 +82,15 @@ class DestinationDetailViewController: UIViewController, MKMapViewDelegate, CLLo
         requestPermissionNotifications()
     }
     
-    
-    /*
-     // MARK: - Navigation
-     
-     // In a storyboard-based application, you will often want to do a little preparation before navigation
-     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-     // Get the new view controller using segue.destination.
-     // Pass the selected object to the new view controller.
-     }
-     */
+   func logoutButton() {
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage.init(systemName: "power"), style: .plain, target: self, action: #selector(powerButtonClicked(_:)))
+        self.navigationItem.leftBarButtonItem?.tintColor = UIColor.black
+    }
+    @objc func powerButtonClicked(_ sender: Any) {
+        Utilities.logOutUser()
+        self.navigationController?.popToRootViewController(animated: true)
+
+    }
     
     func mapThis(originCoordinate: CLLocationCoordinate2D, destinationCord : CLLocationCoordinate2D)
     {

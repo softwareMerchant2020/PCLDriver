@@ -18,6 +18,7 @@
 		EF057BD5243EC9BC0043D563 /* RouteTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = EF057BD3243EC9BC0043D563 /* RouteTableViewCell.xib */; };
 		EF057BD7243ED3000043D563 /* RouteListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF057BD6243ED3000043D563 /* RouteListViewController.swift */; };
 		EF057BD9243ED3770043D563 /* DestinationDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF057BD8243ED3770043D563 /* DestinationDetailViewController.swift */; };
+		EF554DA4244E33AA00EF2B3D /* KeychainPasswordItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF554DA3244E33A900EF2B3D /* KeychainPasswordItem.swift */; };
 		EF9191B82446C7E200137E2B /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF9191B72446C7E200137E2B /* SignUpViewController.swift */; };
 		EFE3D972244C062A00FE667C /* TouchIDAuthentication.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFE3D971244C062A00FE667C /* TouchIDAuthentication.swift */; };
 		EFF5BE7924488C5400F3693C /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFF5BE7824488C5400F3693C /* Utilities.swift */; };
@@ -41,6 +42,7 @@
 		EF057BD3243EC9BC0043D563 /* RouteTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RouteTableViewCell.xib; sourceTree = "<group>"; };
 		EF057BD6243ED3000043D563 /* RouteListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteListViewController.swift; sourceTree = "<group>"; };
 		EF057BD8243ED3770043D563 /* DestinationDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DestinationDetailViewController.swift; sourceTree = "<group>"; };
+		EF554DA3244E33A900EF2B3D /* KeychainPasswordItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeychainPasswordItem.swift; sourceTree = "<group>"; };
 		EF9191B72446C7E200137E2B /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
 		EFE3D971244C062A00FE667C /* TouchIDAuthentication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TouchIDAuthentication.swift; sourceTree = "<group>"; };
 		EFF5BE7824488C5400F3693C /* Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
@@ -129,6 +131,7 @@
 		F3659B3024461B6100CECEE8 /* Utility */ = {
 			isa = PBXGroup;
 			children = (
+				EF554DA3244E33A900EF2B3D /* KeychainPasswordItem.swift */,
 				F34659732448C4300006DC65 /* Constants.swift */,
 				F3659B3124461B7C00CECEE8 /* CommonFunctions.swift */,
 			);
@@ -212,6 +215,7 @@
 				EF057BD4243EC9BC0043D563 /* RouteTableViewCell.swift in Sources */,
 				EF9191B82446C7E200137E2B /* SignUpViewController.swift in Sources */,
 				F3659B3224461B7C00CECEE8 /* CommonFunctions.swift in Sources */,
+				EF554DA4244E33AA00EF2B3D /* KeychainPasswordItem.swift in Sources */,
 				EF057BBF243EC5640043D563 /* AppDelegate.swift in Sources */,
 				EFE3D972244C062A00FE667C /* TouchIDAuthentication.swift in Sources */,
 				C089FEB824489ED800156972 /* Route.swift in Sources */,
