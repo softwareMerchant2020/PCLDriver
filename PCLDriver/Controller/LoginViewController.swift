@@ -156,10 +156,32 @@ class LoginViewController: UIViewController {
     }
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "showroutedetails" {
+            loaddriverDetails()
             let routeListVC = segue.destination as! RouteListViewController
             routeListVC.routeNumber = self.routeNumber
             
         }
+    }
+    func loaddriverDetails() {
+        let defaults = UserDefaults.standard
+        
+        guard let username = defaults.value(forKey: "username") as? String else { return  }
+        RestManager.APIData(url: "https://pclwebapi.azurewebsites.net/api/driver/GetDriver", httpMethod:RestManager.HttpMethod.get.self.rawValue , body:nil ) { Data,Error in
+            if Error == nil {
+                do {
+                    let resultData = try JSONDecoder().decode([Driver].self, from: Data as! Data)
+                    for aDriver in resultData {
+                        if aDriver.PhoneNumber?.trimmingCharacters(in: .whitespacesAndNewlines) ==  username {
+                            defaults.setValue(aDriver.DriverId, forKey: "DriverId")
+                            defaults.setValue(aDriver.DriverName, forKey: "DriverName")
+                        }
+                    }
+                } catch {
+                    print("Error decoding driver data")
+                }
+            }
+        }
+            
     }
 }
 

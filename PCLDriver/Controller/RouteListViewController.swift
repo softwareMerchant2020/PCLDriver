@@ -65,5 +65,14 @@ extension RouteListViewController : UITableViewDelegate,UITableViewDataSource
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         self.performSegue(withIdentifier: "updatespecimendetails", sender: self)
     }
-    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "updatespecimendetails" {
+            let destinationVC = segue.destination as! DestinationDetailViewController
+            let indexpath = routeListTableView.indexPathForSelectedRow
+            let customerObj = customerDetails[indexpath!.row]
+            destinationVC.selectedCustomer = customerObj
+            destinationVC.routeNumber = self.routeNumber
+            
+        }
+    }
 }

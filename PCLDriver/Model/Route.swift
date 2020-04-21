@@ -27,3 +27,8 @@ struct Customer: Decodable
     var Zip: Int?
     var PickupTime: String?
 }
+struct Driver: Decodable {
+    var DriverId:Int?
+    var DriverName:String?
+    var PhoneNumber:String? 
+}

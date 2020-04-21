@@ -371,7 +371,7 @@
                                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="100" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="0IV-gm-rmO">
                                                 <rect key="frame" x="185.66666666666669" y="0.0" width="142.66666666666669" height="25"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                <textInputTraits key="textInputTraits"/>
+                                                <textInputTraits key="textInputTraits" keyboardType="numberPad" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
                                             </textField>
                                         </subviews>
                                     </stackView>
@@ -385,6 +385,9 @@
                                         <state key="normal" title="Update">
                                             <color key="titleColor" red="0.42352941179999998" green="0.043137254899999998" blue="0.1450980392" alpha="1" colorSpace="calibratedRGB"/>
                                         </state>
+                                        <connections>
+                                            <action selector="updateStatusClicked:" destination="lAj-na-wLz" eventType="touchUpInside" id="FuU-WS-qoM"/>
+                                        </connections>
                                     </button>
                                 </subviews>
                             </stackView>
@@ -407,6 +410,7 @@
                     <navigationItem key="navigationItem" id="rdZ-EE-g0X"/>
                     <connections>
                         <outlet property="mapViewDisplay" destination="epU-qM-Y8P" id="EeG-km-qNc"/>
+                        <outlet property="specimenCountField" destination="0IV-gm-rmO" id="m8Q-Iw-KiW"/>
                         <outlet property="statusPicker" destination="SjN-Ik-4gy" id="E0M-U0-ofM"/>
                     </connections>
                 </viewController>

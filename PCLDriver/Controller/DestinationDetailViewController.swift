@@ -32,17 +32,20 @@ class DestinationDetailViewController: UIViewController, MKMapViewDelegate, CLLo
             pickerLabel?.textAlignment = .center
         }
         pickerLabel?.text = CollectionStatus.statusList[row]
-        pickerLabel?.textColor = UIColor(named: "Your Color Name")
+        pickerLabel?.textColor = UIColor.systemRed
         
         return pickerLabel!
     }
     
     // MARK: Map stuff
+    var selectedCustomer:Customer?
     var routeDetails:[Route]?
     var addressForGeocoding : String?
     var location1:CLLocation?
     var result: RequestResult?
+    var routeNumber:Int = 11
     
+    @IBOutlet weak var specimenCountField: UITextField!
     @IBOutlet weak var mapViewDisplay: MKMapView!
     var myCurrentLoc: CLLocationCoordinate2D?
     let locationManager = CLLocationManager()
@@ -64,7 +67,6 @@ class DestinationDetailViewController: UIViewController, MKMapViewDelegate, CLLo
     override func viewDidLoad() {
         super.viewDidLoad()
         getLocs(RouteNumber: 7)
-        print(routeDetails)
         logoutButton()
         
         statusPicker.delegate = self
@@ -90,6 +92,40 @@ class DestinationDetailViewController: UIViewController, MKMapViewDelegate, CLLo
         Utilities.logOutUser()
         self.navigationController?.popToRootViewController(animated: true)
 
+    }
+    
+    @IBAction func updateStatusClicked(_ sender: Any) {
+/*       0    NotCollected
+1    Collected
+2    Rescheduled
+3    Missed
+4    Closed
+5    Other
+        */
+        let count = Int(specimenCountField.text!) ?? 0
+        guard let driverName = UserDefaults.standard.value(forKey: "DriverName") as? String else { return }
+        
+        let jsonBody:Dictionary<String,Any> = [
+            "CustomerId": selectedCustomer?.CustomerId as Any,
+           "RouteId": routeNumber,
+           "NumberOfSpecimens": count,
+           "Status": statusPicker.selectedRow(inComponent: 0),
+           "UpdateBy": driverName
+        ]
+        RestManager.APIData(url: baseURL + addUpdateTransactionStatus, httpMethod: RestManager.HttpMethod.post.self.rawValue, body: Utilities.SerializedData(JSONObject: jsonBody)){
+            (Data, Error) in
+            if Error == nil{
+                do {
+                    let result = try JSONDecoder().decode(RequestResult.self, from: Data as! Data )
+                    DispatchQueue.main.async {
+                        let alert = Utilities.getAlertControllerwith(title: "Update", message: result.Result, alertActionTitle: "Ok")
+                        self.present(alert, animated: true)
+                    }
+                } catch let JSONErr{
+                    print(JSONErr.localizedDescription)
+                }
+            }
+        }
     }
     
     func mapThis(originCoordinate: CLLocationCoordinate2D, destinationCord : CLLocationCoordinate2D)
@@ -145,12 +181,12 @@ class DestinationDetailViewController: UIViewController, MKMapViewDelegate, CLLo
     {
         guard let locVal: CLLocationCoordinate2D = manager.location?.coordinate else { return }
         self.myCurrentLoc = locVal
-        
+        guard let driverId = UserDefaults.standard.value(forKey: "DriverId") as? Int else { return }
         
         let delayTime = DispatchTime.now() + 3
         print("sending location")
         DispatchQueue.main.asyncAfter(deadline: delayTime, execute:{
-            self.sendDriverLoc(driverID: 3)})
+            self.sendDriverLoc(driverID: driverId)})
         
     }
     
