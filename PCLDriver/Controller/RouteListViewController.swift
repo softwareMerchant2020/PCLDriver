@@ -17,7 +17,16 @@ class RouteListViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationController?.isNavigationBarHidden = false
+        logoutButton()
         loadApi()
+    }
+    func logoutButton() {
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage.init(systemName: "power"), style: .plain, target: self, action: #selector(powerButtonClicked(_:)))
+        self.navigationItem.leftBarButtonItem?.tintColor = UIColor.black
+    }
+    @objc func powerButtonClicked(_ sender: Any) {
+        Utilities.logOutUser()
+        self.navigationController?.popToRootViewController(animated: true)
     }
     func loadApi() {
         RestManager.APIData(url: baseURL + getRouteDetail + "?RouteNumber=" + String(routeNumber), httpMethod: RestManager.HttpMethod.post.self.rawValue, body: nil){

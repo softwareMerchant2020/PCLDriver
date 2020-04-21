@@ -24,5 +24,19 @@ class Utilities {
         let data = try? JSONSerialization.data(withJSONObject: JSONObject, options: [.prettyPrinted, .sortedKeys])
         return data!
     }
-
+    static func logOutUser() {
+        let defaults = UserDefaults.standard
+        let username = defaults.object(forKey: "username") as! String
+        
+        do {
+          let passwordItem = KeychainPasswordItem(service: KeychainConfiguration.serviceName,
+                                                  account: username,
+                                                  accessGroup: KeychainConfiguration.accessGroup)
+            try passwordItem.deleteItem()
+            defaults.removeObject(forKey: "username")
+            defaults.set(false, forKey: "hasLoginKey")
+        } catch {
+          fatalError("Error updating keychain - \(error)")
+        }
+    }
 }
