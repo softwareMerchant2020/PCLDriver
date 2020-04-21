@@ -146,8 +146,8 @@ class DestinationDetailViewController: UIViewController, MKMapViewDelegate, CLLo
         self.myCurrentLoc = locVal
         
         
-        let delayTime = DispatchTime.now() + 180.0
-        print("one")
+        let delayTime = DispatchTime.now() + 3
+        print("sending location")
         DispatchQueue.main.asyncAfter(deadline: delayTime, execute:{
             self.sendDriverLoc(driverID: 3)})
         
