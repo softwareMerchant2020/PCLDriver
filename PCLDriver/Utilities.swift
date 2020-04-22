@@ -26,7 +26,7 @@ class Utilities {
     }
     static func logOutUser() {
         let defaults = UserDefaults.standard
-        let username = defaults.object(forKey: "username") as! String
+        guard  let username = defaults.object(forKey: "username") as? String else { return }
         
         do {
           let passwordItem = KeychainPasswordItem(service: KeychainConfiguration.serviceName,

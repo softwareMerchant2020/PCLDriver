@@ -21,6 +21,7 @@ class RouteListViewController: UIViewController {
         loadApi()
     }
     func logoutButton() {
+        self.navigationItem.setHidesBackButton(true, animated: true)
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage.init(systemName: "power"), style: .plain, target: self, action: #selector(powerButtonClicked(_:)))
         self.navigationItem.leftBarButtonItem?.tintColor = UIColor.black
     }

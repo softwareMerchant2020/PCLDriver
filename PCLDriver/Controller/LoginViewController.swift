@@ -25,17 +25,29 @@ class LoginViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
       super.viewDidAppear(animated)
       let touchBool = touchMe.canEvaluatePolicy()
-      if touchBool {
-       touchIDLoginAction()
+        let hasLoginKey = UserDefaults.standard.bool(forKey: "hasLoginKey")
+        if touchBool && hasLoginKey {
+            touchIDLoginAction()
         }
-        let credentials:(username:String, password:String) = checkLogin()
-        if !credentials.username.isEmpty && !credentials.password.isEmpty {
-            loginUsingUsernameAndPassword(username: credentials.username, password: credentials.password)
-        }
+        else{
+       loginWithCredentials()
+    }
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.navigationController?.setNavigationBarHidden(true, animated: true)
+    }
+    override func viewDidDisappear(_ animated: Bool) {
+        phoneNumberField.text = ""
+        passwordField.text = ""
+    }
+    func loginWithCredentials() {
+         let credentials:(username:String, password:String) = checkLogin()
+                   if !credentials.username.isEmpty && !credentials.password.isEmpty {
+                       phoneNumberField.text = credentials.username
+                       passwordField.text = credentials.password
+                       loginUsingUsernameAndPassword(username: credentials.username, password: credentials.password)
+                   }
     }
     func touchIDLoginAction()  {
         touchMe.authenticateUser() {  message in
@@ -50,7 +62,7 @@ class LoginViewController: UIViewController {
                 self.loginButtonClicked(self as Any)
             }
           } else {
-            self.transitToView()
+            self.loginWithCredentials()
           }
         }
     }
@@ -80,13 +92,14 @@ class LoginViewController: UIViewController {
                         if resultData.RouteNo>0 {
                             self.routeNumber = resultData.RouteNo
                             DispatchQueue.main.async {
-                                let alert = UIAlertController(title: "Login", message: "Login success", preferredStyle: .alert)
-                                let action = UIAlertAction(title: "Ok", style: .default) { (handler) in
-                                    self.saveUsernamePasswordInKeychain(username: username, password: password)
-                                    self.transitToView()
-                                }
-                                alert.addAction(action)
-                                self.present(alert, animated: true, completion: nil)
+                                let alert = Utilities.getAlertControllerwith(title: "Login", message: "Login success")
+                                self.present(alert, animated: true, completion: {
+                                    Timer.scheduledTimer(withTimeInterval: 0.3, repeats: false) { (_ ) in
+                                        self.saveUsernamePasswordInKeychain(username: username, password: password)
+                                        self.transitToView()
+                                        self.dismiss(animated: true, completion: nil)
+                                    }
+                                })
                             }
                         }
                         else
@@ -105,7 +118,7 @@ class LoginViewController: UIViewController {
                     }
                 }
             }
-    }
+}
     func transitToView()  {
         self.performSegue(withIdentifier: "showroutedetails", sender: self)
     }
