@@ -10,7 +10,7 @@ import UIKit
 
 class RouteListViewController: UIViewController {
     var routeNumber:Int = 11
-    var customerDetails:[Customer] = [Customer]()
+    var customerDetails:[Route] = [Route]()
     
     
     @IBOutlet weak var routeListTableView: UITableView!
@@ -34,7 +34,7 @@ class RouteListViewController: UIViewController {
             (Data, Error) in
             if Error == nil{
                 do {
-                    self.customerDetails = try JSONDecoder().decode([Customer].self, from: Data as! Data )
+                    self.customerDetails = try JSONDecoder().decode([Route].self, from: Data as! Data )
                     self.loadTableView()
                 } catch let JSONErr{
                     print(JSONErr.localizedDescription)
@@ -54,12 +54,12 @@ class RouteListViewController: UIViewController {
 extension RouteListViewController : UITableViewDelegate,UITableViewDataSource
 {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        self.customerDetails.count
+        self.customerDetails[0].Customer?.count ?? 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "RouteTableViewCell", for: indexPath) as! RouteTableViewCell
-        cell.setCellData(object: customerDetails[indexPath.row])
+        cell.setCellData(object: (customerDetails[0].Customer?[indexPath.row])!)
         return cell
         
     }
@@ -70,7 +70,7 @@ extension RouteListViewController : UITableViewDelegate,UITableViewDataSource
         if segue.identifier == "updatespecimendetails" {
             let destinationVC = segue.destination as! DestinationDetailViewController
             let indexpath = routeListTableView.indexPathForSelectedRow
-            let customerObj = customerDetails[indexpath!.row]
+            let customerObj = customerDetails[0].Customer![indexpath!.row]
             destinationVC.selectedCustomer = customerObj
             destinationVC.routeNumber = self.routeNumber
             

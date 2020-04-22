@@ -62,7 +62,7 @@ class DestinationDetailViewController: UIViewController, MKMapViewDelegate, CLLo
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        getLocs(RouteNumber: 7)
+        getLocs(RouteNumber: 3)
         logoutButton()
         
         statusPicker.delegate = self

@@ -25,7 +25,12 @@ struct Customer: Decodable
     var City: String?
     var State: String?
     var Zip: Int?
-    var PickupTime: String?
+    var CollectionStatus: String?
+    var SpecimensCollected: Int?
+    var NextPickUpTime: String?
+    var IsSelected: Bool
+    var Cust_Lat: Double?
+    var Cust_Log: Double?
 }
 struct Driver: Decodable {
     var DriverId:Int?
