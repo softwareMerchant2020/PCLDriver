@@ -49,19 +49,14 @@ class DestinationDetailViewController: UIViewController, MKMapViewDelegate, CLLo
     @IBOutlet weak var mapViewDisplay: MKMapView!
     var myCurrentLoc: CLLocationCoordinate2D?
     let locationManager = CLLocationManager()
+    var locationAsArray = [CLLocationCoordinate2D]()
+    
+    var positionStatus = Bool()
+
     
     // the following coordinates are to be replaced with repsonses from CLgeodecoder
     
     var tempVar: CLLocationCoordinate2D?
-    
-    
-    func loadOverlayForRegionWithLatitude(latitude: Double, longitude: Double)
-    {
-        let coordinates = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
-        let circle = MKCircle(center: coordinates, radius: 100)
-        self.mapViewDisplay.setRegion(MKCoordinateRegion(center: coordinates, span: MKCoordinateSpan(latitudeDelta: 7, longitudeDelta: 7)), animated: true)
-        self.mapViewDisplay.addOverlay(circle)
-    }
     
     
     override func viewDidLoad() {
@@ -83,6 +78,15 @@ class DestinationDetailViewController: UIViewController, MKMapViewDelegate, CLLo
         
         requestPermissionNotifications()
     }
+    
+    func loadOverlayForRegionWithLatitude(latitude: Double, longitude: Double)
+    {
+        let coordinates = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+        let circle = MKCircle(center: coordinates, radius: 100)
+        self.mapViewDisplay.setRegion(MKCoordinateRegion(center: coordinates, span: MKCoordinateSpan(latitudeDelta: 7, longitudeDelta: 7)), animated: true)
+        self.mapViewDisplay.addOverlay(circle)
+    }
+    
     
    func logoutButton() {
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage.init(systemName: "power"), style: .plain, target: self, action: #selector(powerButtonClicked(_:)))
@@ -213,8 +217,6 @@ class DestinationDetailViewController: UIViewController, MKMapViewDelegate, CLLo
         })
     }
     
-    var positionStatus = Bool()
-    
     func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion)
     {
         positionStatus = true
@@ -338,9 +340,7 @@ class DestinationDetailViewController: UIViewController, MKMapViewDelegate, CLLo
         let addressToGeocode: String = (streetAddress+Seperator+state+Seperator+city+Seperator+ZIP)
         return(addressToGeocode)
     }
-    
-    var locationAsArray = [CLLocationCoordinate2D]()
-    
+        
     func getCoordinate( addressString : String,
                         completionHandler: @escaping(CLLocationCoordinate2D, NSError?) -> Void )
     {
