@@ -43,7 +43,8 @@ class DestinationDetailViewController: UIViewController, MKMapViewDelegate, CLLo
     var addressForGeocoding : String?
     var location1:CLLocation?
     var result: RequestResult?
-    var routeNumber:Int = 11
+    var driverNumber: Int?
+    var routeNumber: Int?
     
     @IBOutlet weak var specimenCountField: UITextField!
     @IBOutlet weak var mapViewDisplay: MKMapView!
@@ -221,6 +222,7 @@ class DestinationDetailViewController: UIViewController, MKMapViewDelegate, CLLo
     {
         positionStatus = true
         print("entered")
+        sendDriverLoc(driverID: 3)
         postLocalNotifications(eventTitle: "entered Pickup zone")
     }
     
@@ -228,6 +230,7 @@ class DestinationDetailViewController: UIViewController, MKMapViewDelegate, CLLo
     {
         positionStatus = false
         print("exited")
+        sendDriverLoc(driverID: 3) //get rid of hard code
         postLocalNotifications(eventTitle: "exited Pickup zone")
     }
     
@@ -307,7 +310,7 @@ class DestinationDetailViewController: UIViewController, MKMapViewDelegate, CLLo
     
     func sendDriverLoc(driverID: Int)
     {
-        let bodyParamsRaw = ["driverId": driverID, "Lat": Double(myCurrentLoc!.latitude), "log":Double(myCurrentLoc!.longitude)] as [String : Any]
+        let bodyParamsRaw = ["driverId": driverID, "Lat": Double(myCurrentLoc!.latitude), "log":Double(myCurrentLoc!.longitude), "Geofence":positionStatus] as [String : Any]
         let bodyParams = SerializedData(JSONObject: bodyParamsRaw)
         
         RestManager.APIData(url: baseURL + addDriverLocation, httpMethod: RestManager.HttpMethod.post.self.rawValue, body: bodyParams){
