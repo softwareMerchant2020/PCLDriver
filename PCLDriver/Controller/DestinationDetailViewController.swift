@@ -40,11 +40,11 @@ class DestinationDetailViewController: UIViewController, MKMapViewDelegate, CLLo
     // MARK: Map stuff
     var selectedCustomer:Customer?
     var routeDetails:[Route]?
+    var routeNumber:Int?
     var addressForGeocoding : String?
     var location1:CLLocation?
     var result: RequestResult?
     var driverNumber: Int?
-    var routeNumber: Int?
     
     @IBOutlet weak var specimenCountField: UITextField!
     @IBOutlet weak var mapViewDisplay: MKMapView!
@@ -62,7 +62,7 @@ class DestinationDetailViewController: UIViewController, MKMapViewDelegate, CLLo
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        getLocs(RouteNumber: 3)
+        getLocs(RouteNumber: self.routeNumber ?? 0)
         logoutButton()
         
         statusPicker.delegate = self

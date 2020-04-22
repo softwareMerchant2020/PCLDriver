@@ -9,14 +9,17 @@
 import UIKit
 
 class RouteListViewController: UIViewController {
-    var routeNumber:Int = 11
     var customerDetails:[Route] = [Route]()
-    
+    var routeNumber:Int?
     
     @IBOutlet weak var routeListTableView: UITableView!
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationController?.isNavigationBarHidden = false
+
+        let userdefaults = UserDefaults.standard
+        self.routeNumber = userdefaults.integer(forKey: "RouteNumber")
+        
         logoutButton()
         loadApi()
     }
@@ -30,7 +33,7 @@ class RouteListViewController: UIViewController {
         self.navigationController?.popToRootViewController(animated: true)
     }
     func loadApi() {
-        RestManager.APIData(url: baseURL + getRouteDetail + "?RouteNumber=" + String(routeNumber), httpMethod: RestManager.HttpMethod.post.self.rawValue, body: nil){
+        RestManager.APIData(url: baseURL + getRouteDetail + "?RouteNumber=" + String(self.routeNumber ?? 0), httpMethod: RestManager.HttpMethod.post.self.rawValue, body: nil){
             (Data, Error) in
             if Error == nil{
                 do {

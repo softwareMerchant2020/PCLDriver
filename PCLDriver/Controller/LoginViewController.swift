@@ -91,6 +91,8 @@ class LoginViewController: UIViewController {
                         let resultData = try JSONDecoder().decode(DriverRoute.self, from: Data as! Data)
                         if resultData.RouteNo>0 {
                             self.routeNumber = resultData.RouteNo
+                            let userdefaults = UserDefaults.standard
+                            userdefaults.set(resultData.RouteNo, forKey: "RouteNumber")
                             DispatchQueue.main.async {
                                 let alert = Utilities.getAlertControllerwith(title: "Login", message: "Login success")
                                 self.present(alert, animated: true, completion: {
