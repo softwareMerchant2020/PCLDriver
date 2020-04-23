@@ -45,6 +45,7 @@ class DestinationDetailViewController: UIViewController, MKMapViewDelegate, CLLo
     var location1:CLLocation?
     var result: RequestResult?
     var driverNumber: Int?
+    let driverId = UserDefaults.standard.value(forKey: "DriverId")
     
     @IBOutlet weak var specimenCountField: UITextField!
     @IBOutlet weak var mapViewDisplay: MKMapView!
@@ -222,7 +223,7 @@ class DestinationDetailViewController: UIViewController, MKMapViewDelegate, CLLo
     {
         positionStatus = true
         print("entered")
-        sendDriverLoc(driverID: 3)
+        sendDriverLoc(driverID: routeDetails?[0].DriverId ?? 3)
         postLocalNotifications(eventTitle: "entered Pickup zone")
     }
     
@@ -230,7 +231,7 @@ class DestinationDetailViewController: UIViewController, MKMapViewDelegate, CLLo
     {
         positionStatus = false
         print("exited")
-        sendDriverLoc(driverID: 3) //get rid of hard code
+        sendDriverLoc(driverID: routeDetails?[0].DriverId ?? 3) //get rid of hard code
         postLocalNotifications(eventTitle: "exited Pickup zone")
     }
     
