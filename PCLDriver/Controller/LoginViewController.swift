@@ -88,11 +88,11 @@ class LoginViewController: UIViewController {
             RestManager.APIData(url: "https://pclwebapi.azurewebsites.net/api/driver/DriverLogin", httpMethod: RestManager.HttpMethod.post.self.rawValue, body: Utilities.SerializedData(JSONObject: jsonBody)){Data,Error in
                 if Error == nil {
                     do {
-                        let resultData = try JSONDecoder().decode(DriverRoute.self, from: Data as! Data)
-                        if resultData.RouteNo>0 {
-                            self.routeNumber = resultData.RouteNo
+                        let jsonData = try JSONSerialization.jsonObject(with: Data as! Data, options: .allowFragments) as! Dictionary<String,Any>
+                        if jsonData["RouteNo"] != nil{
+                            self.routeNumber = jsonData["RouteNo"] as! Int
                             let userdefaults = UserDefaults.standard
-                            userdefaults.set(resultData.RouteNo, forKey: "RouteNumber")
+                            userdefaults.set(self.routeNumber, forKey: "RouteNumber")
                             DispatchQueue.main.async {
                                 let alert = Utilities.getAlertControllerwith(title: "Login", message: "Login success")
                                 self.present(alert, animated: true, completion: {
@@ -107,12 +107,11 @@ class LoginViewController: UIViewController {
                         else
                         {
                             DispatchQueue.main.async {
-                                let alert = Utilities.getAlertControllerwith(title: "Login", message: "Login Failed", alertActionTitle: "Ok")
+                                let alert = Utilities.getAlertControllerwith(title: "Login", message: jsonData["Result"] as! String, alertActionTitle: "Ok")
                                 self.present(alert, animated: true)
                             }
                         }
-                        
-                    } catch let JSONErr{
+                        } catch let JSONErr {
                         DispatchQueue.main.async {
                             let alert = Utilities.getAlertControllerwith(title: "Login", message: JSONErr.localizedDescription, alertActionTitle: "Ok")
                             self.present(alert, animated: true)

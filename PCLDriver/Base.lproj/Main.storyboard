@@ -409,6 +409,8 @@
                     </view>
                     <navigationItem key="navigationItem" id="rdZ-EE-g0X"/>
                     <connections>
+                        <outlet property="labAddress" destination="s4v-JD-zEO" id="chU-BM-odZ"/>
+                        <outlet property="labName" destination="DaQ-Eb-i3s" id="eiN-CR-KJO"/>
                         <outlet property="mapViewDisplay" destination="epU-qM-Y8P" id="EeG-km-qNc"/>
                         <outlet property="specimenCountField" destination="0IV-gm-rmO" id="m8Q-Iw-KiW"/>
                         <outlet property="statusPicker" destination="SjN-Ik-4gy" id="E0M-U0-ofM"/>

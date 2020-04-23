@@ -14,6 +14,58 @@ class DestinationDetailViewController: UIViewController, MKMapViewDelegate, CLLo
 {
     
     @IBOutlet weak var statusPicker: UIPickerView!
+    
+    // MARK: Map stuff
+    var selectedCustomer:Customer?
+    var routeDetails:[Route]?
+    var routeNumber:Int?
+    var addressForGeocoding : String?
+    var location1:CLLocation?
+    var result: RequestResult?
+    var driverNumber: Int?
+    let driverId: Int? = (UserDefaults.standard.value(forKey: "DriverId") as! Int)
+    
+    @IBOutlet weak var labAddress: UILabel!
+    @IBOutlet weak var labName: UILabel!
+    @IBOutlet weak var specimenCountField: UITextField!
+    @IBOutlet weak var mapViewDisplay: MKMapView!
+    var myCurrentLoc: CLLocationCoordinate2D?
+    let locationManager = CLLocationManager()
+    var locationAsArray = [CLLocationCoordinate2D]()
+    
+    var positionStatus = Bool()
+
+    
+    // the following coordinates are to be replaced with repsonses from CLgeodecoder
+    
+    var tempVar: CLLocationCoordinate2D?
+    
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        getLocs(RouteNumber: self.routeNumber ?? 0)
+        logoutButton()
+        addLabName()
+        statusPicker.delegate = self
+        self.navigationController?.isNavigationBarHidden = false
+        locationManager.delegate = self // Sets the delegate to self
+        locationManager.desiredAccuracy = kCLLocationAccuracyBest // Sets the accuracy of the GPS to best in this case
+        locationManager.requestAlwaysAuthorization() // Asks for permission
+        locationManager.requestWhenInUseAuthorization() //Asks for permission when in use
+        locationManager.startUpdatingLocation() //Updates location when moving
+        mapViewDisplay.delegate = self
+        mapViewDisplay.showsScale = true
+        mapViewDisplay.showsUserLocation = true
+        // Do any additional setup after loading the view.
+        
+        requestPermissionNotifications()
+    }
+    func addLabName()  {
+        labName.text = selectedCustomer?.CustomerName
+        let address:String = String(format: "%@, %@, %@, %d", selectedCustomer?.StreetAddress ?? "",selectedCustomer?.City ?? "", selectedCustomer?.State ?? "", selectedCustomer?.Zip ?? 0)
+        labAddress.text = address
+    }
+    // Picker delegate
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         1
     }
@@ -35,50 +87,6 @@ class DestinationDetailViewController: UIViewController, MKMapViewDelegate, CLLo
         pickerLabel?.textColor = UIColor.systemRed
         
         return pickerLabel!
-    }
-    
-    // MARK: Map stuff
-    var selectedCustomer:Customer?
-    var routeDetails:[Route]?
-    var routeNumber:Int?
-    var addressForGeocoding : String?
-    var location1:CLLocation?
-    var result: RequestResult?
-    var driverNumber: Int?
-    let driverId: Int? = (UserDefaults.standard.value(forKey: "DriverId") as! Int)
-    
-    @IBOutlet weak var specimenCountField: UITextField!
-    @IBOutlet weak var mapViewDisplay: MKMapView!
-    var myCurrentLoc: CLLocationCoordinate2D?
-    let locationManager = CLLocationManager()
-    var locationAsArray = [CLLocationCoordinate2D]()
-    
-    var positionStatus = Bool()
-
-    
-    // the following coordinates are to be replaced with repsonses from CLgeodecoder
-    
-    var tempVar: CLLocationCoordinate2D?
-    
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        getLocs(RouteNumber: self.routeNumber ?? 0)
-        logoutButton()
-        
-        statusPicker.delegate = self
-        self.navigationController?.isNavigationBarHidden = false
-        locationManager.delegate = self // Sets the delegate to self
-        locationManager.desiredAccuracy = kCLLocationAccuracyBest // Sets the accuracy of the GPS to best in this case
-        locationManager.requestAlwaysAuthorization() // Asks for permission
-        locationManager.requestWhenInUseAuthorization() //Asks for permission when in use
-        locationManager.startUpdatingLocation() //Updates location when moving
-        mapViewDisplay.delegate = self
-        mapViewDisplay.showsScale = true
-        mapViewDisplay.showsUserLocation = true
-        // Do any additional setup after loading the view.
-        
-        requestPermissionNotifications()
     }
     
     func loadOverlayForRegionWithLatitude(latitude: Double, longitude: Double)
