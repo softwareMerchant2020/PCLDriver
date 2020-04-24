@@ -121,7 +121,7 @@ class DestinationDetailViewController: UIViewController, MKMapViewDelegate, CLLo
         
         let jsonBody:Dictionary<String,Any> = [
             "CustomerId": selectedCustomer?.CustomerId as Any,
-           "RouteId": routeNumber,
+            "RouteId": routeNumber ?? 0,
            "NumberOfSpecimens": count,
            "Status": statusPicker.selectedRow(inComponent: 0),
            "UpdateBy": driverNumber
@@ -327,7 +327,6 @@ class DestinationDetailViewController: UIViewController, MKMapViewDelegate, CLLo
             if Error == nil{
                 do {
                     self.result = try JSONDecoder().decode(RequestResult.self, from: Data as! Data )
-                    print(self.result)
                 } catch let JSONErr{
                     print(JSONErr.localizedDescription)
                 }
