@@ -24,6 +24,7 @@ class DestinationDetailViewController: UIViewController, MKMapViewDelegate, CLLo
     var result: RequestResult?
     var driverNumber: Int?
     let driverId: Int? = (UserDefaults.standard.value(forKey: "DriverId") as! Int)
+    var delegate:RouteListViewController?
     
     @IBOutlet weak var labAddress: UILabel!
     @IBOutlet weak var labName: UILabel!
@@ -44,6 +45,7 @@ class DestinationDetailViewController: UIViewController, MKMapViewDelegate, CLLo
     override func viewDidLoad() {
         super.viewDidLoad()
         getLocs(RouteNumber: self.routeNumber ?? 0)
+        specimenCountField.isHidden = true
         logoutButton()
         addLabName()
         statusPicker.delegate = self
@@ -77,6 +79,8 @@ class DestinationDetailViewController: UIViewController, MKMapViewDelegate, CLLo
         return CollectionStatus.statusList[row]
     }
     func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView {
+        print("title for row")
+
         var pickerLabel: UILabel? = (view as? UILabel)
         if pickerLabel == nil {
             pickerLabel = UILabel()
@@ -85,6 +89,12 @@ class DestinationDetailViewController: UIViewController, MKMapViewDelegate, CLLo
         }
         pickerLabel?.text = CollectionStatus.statusList[row]
         pickerLabel?.textColor = UIColor.systemRed
+        if pickerLabel?.text == CollectionStatus.statusList[1] {
+            specimenCountField.isHidden = false
+        }
+        else {
+            specimenCountField.isHidden = true
+        }
         
         return pickerLabel!
     }
@@ -131,10 +141,19 @@ class DestinationDetailViewController: UIViewController, MKMapViewDelegate, CLLo
             if Error == nil{
                 do {
                     let result = try JSONDecoder().decode(RequestResult.self, from: Data as! Data )
-                    DispatchQueue.main.async {
-                        let alert = Utilities.getAlertControllerwith(title: "Update", message: result.Result, alertActionTitle: "Ok")
-                        self.present(alert, animated: true)
+                    if result.Result == "Success" {
+                        DispatchQueue.main.async {
+                            let alert = UIAlertController(title: result.Result, message: nil, preferredStyle: .alert)
+                             self.present(alert, animated: true, completion: {
+                                Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false) { (_ ) in
+                                    self.dismiss(animated: true, completion: {
+                                        self.delegate?.refreshTable()
+                                        self.navigationController?.popViewController(animated: true)
+                                    }) }
+                            })
+                        }
                     }
+                    
                 } catch let JSONErr{
                     print(JSONErr.localizedDescription)
                 }

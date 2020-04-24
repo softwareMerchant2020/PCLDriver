@@ -11,6 +11,8 @@ import UIKit
 class RouteListViewController: UIViewController {
     var customerDetails:[Route] = [Route]()
     var routeNumber:Int?
+    var selectedIndexpath:IndexPath?
+    
     
     @IBOutlet weak var routeListTableView: UITableView!
     override func viewDidLoad() {
@@ -62,12 +64,23 @@ extension RouteListViewController : UITableViewDelegate,UITableViewDataSource
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "RouteTableViewCell", for: indexPath) as! RouteTableViewCell
+        
         cell.setCellData(object: (customerDetails[0].Customer?[indexPath.row])!)
+        if customerDetails[0].Customer?[indexPath.row].CollectionStatus == "Collected" {
+            cell.isUserInteractionEnabled = false
+        }
+        else {
+            cell.isUserInteractionEnabled = true
+        }
         return cell
         
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        selectedIndexpath = indexPath
         self.performSegue(withIdentifier: "updatespecimendetails", sender: self)
+    }
+    func refreshTable() {
+        self.loadApi()
     }
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "updatespecimendetails" {
