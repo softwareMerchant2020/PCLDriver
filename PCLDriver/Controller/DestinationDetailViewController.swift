@@ -25,6 +25,7 @@ class DestinationDetailViewController: UIViewController, MKMapViewDelegate, CLLo
     var driverNumber: Int?
     let driverId: Int? = (UserDefaults.standard.value(forKey: "DriverId") as! Int)
     var delegate:RouteListViewController?
+    var customerNumber: Int?
     
     @IBOutlet weak var labAddress: UILabel!
     @IBOutlet weak var labName: UILabel!
@@ -424,7 +425,7 @@ class DestinationDetailViewController: UIViewController, MKMapViewDelegate, CLLo
                         self.locationManager.startMonitoring(for: geoFenceRegion)
                     }
                     
-                    if coordsOfATA.count>2
+                    if coordsOfATA.count>1
                     {
                         for z in Range(0...coordsOfATA.count-2)
                         {

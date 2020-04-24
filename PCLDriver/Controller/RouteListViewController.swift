@@ -88,6 +88,7 @@ extension RouteListViewController : UITableViewDelegate,UITableViewDataSource
             let indexpath = routeListTableView.indexPathForSelectedRow
             let customerObj = customerDetails[0].Customer![indexpath!.row]
             destinationVC.selectedCustomer = customerObj
+            destinationVC.customerNumber = customerObj.CustomerId ?? 0
             destinationVC.routeNumber = self.routeNumber
             
         }
