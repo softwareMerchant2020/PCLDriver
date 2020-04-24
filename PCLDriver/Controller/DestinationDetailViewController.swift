@@ -117,14 +117,14 @@ class DestinationDetailViewController: UIViewController, MKMapViewDelegate, CLLo
 5    Other
         */
         let count = Int(specimenCountField.text!) ?? 0
-        guard let driverName = UserDefaults.standard.value(forKey: "DriverName") as? String else { return }
+        guard let driverNumber = UserDefaults.standard.value(forKey: "DriverId") as? Int else { return }
         
         let jsonBody:Dictionary<String,Any> = [
             "CustomerId": selectedCustomer?.CustomerId as Any,
            "RouteId": routeNumber,
            "NumberOfSpecimens": count,
            "Status": statusPicker.selectedRow(inComponent: 0),
-           "UpdateBy": driverName
+           "UpdateBy": driverNumber
         ]
         RestManager.APIData(url: baseURL + addUpdateTransactionStatus, httpMethod: RestManager.HttpMethod.post.self.rawValue, body: Utilities.SerializedData(JSONObject: jsonBody)){
             (Data, Error) in
