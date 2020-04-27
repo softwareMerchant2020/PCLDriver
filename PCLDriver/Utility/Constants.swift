@@ -28,12 +28,14 @@ let addUpdateTransactionStatus = "admin/AddUpdateTransactionStatus"
 let changePwdAPI = "driver/ChangePassword"
 
 enum CollectionStatus: String, Decodable, CaseIterable {
-    case notCollected = "NotCollected"
+    case notCollected = "Not Collected"
     case collected = "Collected"
     case rescheduled = "Rescheduled"
     case missed = "Missed"
     case closed = "Closed"
     case other = "Other"
+    case arrived = "Arrived"
+    
 
     static var statusList: [String] {
         return CollectionStatus.allCases.map { $0.rawValue }

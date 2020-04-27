@@ -329,7 +329,7 @@ class DestinationDetailViewController: UIViewController, MKMapViewDelegate, CLLo
     
     func sendDriverLoc(driverID: Int)
     {
-        let bodyParamsRaw = ["driverId": driverID, "Lat": Double(myCurrentLoc!.latitude), "log":Double(myCurrentLoc!.longitude), "Geofence":positionStatus] as [String : Any]
+        let bodyParamsRaw = ["driverId": driverID, "Lat": Double(self.myCurrentLoc!.latitude), "log":Double(self.myCurrentLoc!.longitude), "Geofence":positionStatus] as [String : Any]
         let bodyParams = SerializedData(JSONObject: bodyParamsRaw)
         
         RestManager.APIData(url: baseURL + addDriverLocation, httpMethod: RestManager.HttpMethod.post.self.rawValue, body: bodyParams){
