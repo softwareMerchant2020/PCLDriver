@@ -320,23 +320,6 @@ class DestinationDetailViewController: UIViewController, MKMapViewDelegate, CLLo
     
     //MARK: getting data for the routes
     
-    
-    
-//    func getLocs(RouteNumber: Int)
-//    {
-//        RestManager.APIData(url: baseURL + getRouteDetail + "?RouteNumber=" + String(RouteNumber), httpMethod: RestManager.HttpMethod.post.self.rawValue, body: nil){
-//            (Data, Error) in
-//            if Error == nil{
-//                do {
-//                    self.routeDetails = try JSONDecoder().decode([RouteDetail].self, from: Data as! Data )
-//                    self.getAllCoordsForRoute()
-//                } catch let JSONErr{
-//                    print(JSONErr.localizedDescription)
-//                }
-//            }
-//        }
-//    }
-    
     func sendDriverLoc(driverID: Int)
     {
         let bodyParamsRaw = ["driverId": driverID, "Lat": Double(myCurrentLoc!.latitude), "log":Double(myCurrentLoc!.longitude), "Geofence":positionStatus] as [String : Any]
@@ -388,6 +371,9 @@ class DestinationDetailViewController: UIViewController, MKMapViewDelegate, CLLo
         }
     }
     
+    
+    
+    
     var listOfLocs = [CLLocationCoordinate2D]()
     func getAllCoordsForRoute()
     {
@@ -419,11 +405,14 @@ class DestinationDetailViewController: UIViewController, MKMapViewDelegate, CLLo
                         print(k)
                         let listOfDropOffs = [["title":"Pick Up Here!", "latitude":k.latitude, "longitude":k.longitude]]
                         self.createAnnot(locations: listOfDropOffs)
-                        let geoFenceRegion = CLCircularRegion(center: k, radius: 100, identifier: "PickUp Location")
-                        geoFenceRegion.notifyOnEntry = true
-                        geoFenceRegion.notifyOnExit = true
-                        self.locationManager.startMonitoring(for: geoFenceRegion)
                     }
+                    
+                    let customerForGeofence = self.selectedCustomer
+                    let centerOfGeofence = CLLocationCoordinate2DMake(customerForGeofence?.custLat ?? 0, customerForGeofence?.custLog ?? 0)
+                    let geoFenceRegion = CLCircularRegion(center: centerOfGeofence, radius: 100, identifier: "PickUp Location")
+                    geoFenceRegion.notifyOnEntry = true
+                    geoFenceRegion.notifyOnExit = true
+                    self.locationManager.startMonitoring(for: geoFenceRegion)
                     
                     if coordsOfATA.count>1
                     {
