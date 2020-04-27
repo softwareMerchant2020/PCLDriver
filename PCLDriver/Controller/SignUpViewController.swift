@@ -23,7 +23,7 @@ class SignUpViewController: UIViewController {
            let alert = Utilities.getAlertControllerwith(title: "Required", message: "All fields are required")
             self.present(alert, animated: true, completion: nil)
         }
-        else if (passwordField.text != confirmPwdField.text) {
+        else if !(Utilities.validatePassword(pwd: passwordField.text!, newPwd: confirmPwdField.text!)) {
             let alert = Utilities.getAlertControllerwith(title: "Mismatch", message: "The password does not match")
             self.present(alert, animated: true, completion: nil)
         }
@@ -33,7 +33,7 @@ class SignUpViewController: UIViewController {
                 "Password": passwordField.text,
                 "ConfirmPassword": confirmPwdField.text
             ]
-            RestManager.APIData(url: "https://pclwebapi.azurewebsites.net/api/driver/DriverSignUp", httpMethod: RestManager.HttpMethod.post.self.rawValue, body: Utilities.SerializedData(JSONObject: jsonBody)){Data,Error in
+            RestManager.APIData(url: baseURL + driverSignUpAPI, httpMethod: RestManager.HttpMethod.post.self.rawValue, body: Utilities.SerializedData(JSONObject: jsonBody)){Data,Error in
                 if Error == nil {
                     do {
                         let resultData = try JSONDecoder().decode(RequestResult.self, from: Data as! Data)

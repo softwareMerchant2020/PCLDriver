@@ -9,10 +9,12 @@
 import UIKit
 
 class RouteListViewController: UIViewController {
-    var customerDetails:[Route] = [Route]()
+    var customerDetails:[RouteDetail] = [RouteDetail]()
     var routeNumber:Int?
     var selectedIndexpath:IndexPath?
     
+    @IBOutlet weak var routeHeaderView: UIView!
+    @IBOutlet var routeHeaderLabels: [UILabel]!
     
     @IBOutlet weak var routeListTableView: UITableView!
     override func viewDidLoad() {
@@ -27,19 +29,19 @@ class RouteListViewController: UIViewController {
     }
     func logoutButton() {
         self.navigationItem.setHidesBackButton(true, animated: true)
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage.init(systemName: "power"), style: .plain, target: self, action: #selector(powerButtonClicked(_:)))
-        self.navigationItem.leftBarButtonItem?.tintColor = UIColor.black
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage.init(systemName: "line.horizontal.3"), style: .plain, target: self, action: #selector(settingsButtonClicked(_:)))
+        self.navigationItem.leftBarButtonItem?.tintColor = UIColor.white
     }
-    @objc func powerButtonClicked(_ sender: Any) {
-        Utilities.logOutUser()
-        self.navigationController?.popToRootViewController(animated: true)
+    @objc func settingsButtonClicked(_ sender: Any) {
+       let settingsVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "SettingsViewController") as! SettingsViewController
+       self.navigationController?.pushViewController(settingsVC, animated: true)
     }
     func loadApi() {
         RestManager.APIData(url: baseURL + getRouteDetail + "?RouteNumber=" + String(self.routeNumber ?? 0), httpMethod: RestManager.HttpMethod.post.self.rawValue, body: nil){
             (Data, Error) in
             if Error == nil{
                 do {
-                    self.customerDetails = try JSONDecoder().decode([Route].self, from: Data as! Data )
+                    self.customerDetails = try JSONDecoder().decode([RouteDetail].self, from: Data as! Data )
                     self.loadTableView()
                 } catch let JSONErr{
                     print(JSONErr.localizedDescription)
@@ -52,24 +54,42 @@ class RouteListViewController: UIViewController {
             self.routeListTableView.delegate = self
             self.routeListTableView.dataSource = self
             self.routeListTableView.register(UINib(nibName: "RouteTableViewCell", bundle: .main), forCellReuseIdentifier: "RouteTableViewCell")
+            self.routeListTableView.tableHeaderView = self.routeHeaderView
+            self.setHeaderLabels()
             self.routeListTableView.rowHeight = 102
+        }
+    }
+    func setHeaderLabels() {
+        for aLabel in routeHeaderLabels {
+            aLabel.adjustsFontSizeToFitWidth = true
+            if aLabel.tag == 0 {
+                aLabel.text = String(format: "Route Name: %@",self.customerDetails[0].route.routeName )
+            } else if aLabel.tag == 1 {
+                aLabel.text = String(format: "Route Number: %d", self.customerDetails[0].route.routeNo)
+            } else if aLabel.tag == 2 {
+                aLabel.text = String(format: "Vehicle: %@",self.customerDetails[0].route.vehicleNo)
+            } else if aLabel.tag == 3 {
+                aLabel.text = String(format: "Number Of Customers in route: %d", self.customerDetails[0].customer.count)
+            }
         }
     }
 }
 extension RouteListViewController : UITableViewDelegate,UITableViewDataSource
 {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        self.customerDetails[0].Customer?.count ?? 0
+        self.customerDetails[0].customer.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "RouteTableViewCell", for: indexPath) as! RouteTableViewCell
         
-        cell.setCellData(object: (customerDetails[0].Customer?[indexPath.row])!)
-        if customerDetails[0].Customer?[indexPath.row].CollectionStatus == "Collected" {
+        cell.setCellData(object: (customerDetails[0].customer[indexPath.row]))
+        if customerDetails[0].customer[indexPath.row].collectionStatus == "Collected" {
+            cell.backgroundColor = #colorLiteral(red: 0.7560525686, green: 0.4933606931, blue: 0.5651173446, alpha: 1)
             cell.isUserInteractionEnabled = false
         }
         else {
+            cell.backgroundColor = UIColor.white
             cell.isUserInteractionEnabled = true
         }
         return cell
@@ -86,11 +106,12 @@ extension RouteListViewController : UITableViewDelegate,UITableViewDataSource
         if segue.identifier == "updatespecimendetails" {
             let destinationVC = segue.destination as! DestinationDetailViewController
             let indexpath = routeListTableView.indexPathForSelectedRow
-            let customerObj = customerDetails[0].Customer![indexpath!.row]
+            let customerObj = customerDetails[0].customer[indexpath!.row]
             destinationVC.selectedCustomer = customerObj
-            destinationVC.customerNumber = customerObj.CustomerId ?? 0
+            destinationVC.customerNumber = customerObj.customerID 
             destinationVC.routeNumber = self.routeNumber
-            
+            destinationVC.routeDetails = self.customerDetails
+            routeListTableView.deselectRow(at: indexpath!, animated: true)
         }
     }
 }

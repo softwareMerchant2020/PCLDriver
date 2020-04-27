@@ -17,7 +17,7 @@ class DestinationDetailViewController: UIViewController, MKMapViewDelegate, CLLo
     
     // MARK: Map stuff
     var selectedCustomer:Customer?
-    var routeDetails:[Route]?
+    var routeDetails:[RouteDetail]!
     var routeNumber:Int?
     var addressForGeocoding : String?
     var location1:CLLocation?
@@ -45,7 +45,7 @@ class DestinationDetailViewController: UIViewController, MKMapViewDelegate, CLLo
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        getLocs(RouteNumber: self.routeNumber ?? 0)
+//        getLocs(RouteNumber: self.routeNumber ?? 0)
         specimenCountField.isHidden = true
         logoutButton()
         addLabName()
@@ -61,11 +61,13 @@ class DestinationDetailViewController: UIViewController, MKMapViewDelegate, CLLo
         mapViewDisplay.showsUserLocation = true
         // Do any additional setup after loading the view.
         
+        self.getAllCoordsForRoute()
+       
         requestPermissionNotifications()
     }
     func addLabName()  {
-        labName.text = selectedCustomer?.CustomerName
-        let address:String = String(format: "%@, %@, %@, %d", selectedCustomer?.StreetAddress ?? "",selectedCustomer?.City ?? "", selectedCustomer?.State ?? "", selectedCustomer?.Zip ?? 0)
+        labName.text = selectedCustomer?.customerName
+        let address:String = String(format: "%@, %@, %@, %d", selectedCustomer?.streetAddress ?? "",selectedCustomer?.city ?? "", selectedCustomer?.state ?? "", selectedCustomer?.zip ?? 0)
         labAddress.text = address
     }
     // Picker delegate
@@ -80,8 +82,6 @@ class DestinationDetailViewController: UIViewController, MKMapViewDelegate, CLLo
         return CollectionStatus.statusList[row]
     }
     func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView {
-        print("title for row")
-
         var pickerLabel: UILabel? = (view as? UILabel)
         if pickerLabel == nil {
             pickerLabel = UILabel()
@@ -110,13 +110,12 @@ class DestinationDetailViewController: UIViewController, MKMapViewDelegate, CLLo
     
     
    func logoutButton() {
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage.init(systemName: "power"), style: .plain, target: self, action: #selector(powerButtonClicked(_:)))
-        self.navigationItem.leftBarButtonItem?.tintColor = UIColor.black
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage.init(systemName: "line.horizontal.3"), style: .plain, target: self, action: #selector(powerButtonClicked(_:)))
+        self.navigationItem.leftBarButtonItem?.tintColor = UIColor.white
     }
     @objc func powerButtonClicked(_ sender: Any) {
-        Utilities.logOutUser()
-        self.navigationController?.popToRootViewController(animated: true)
-
+        let settingsVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "SettingsViewController") as! SettingsViewController
+        self.navigationController?.pushViewController(settingsVC, animated: true)
     }
     
     @IBAction func updateStatusClicked(_ sender: Any) {
@@ -131,7 +130,7 @@ class DestinationDetailViewController: UIViewController, MKMapViewDelegate, CLLo
         guard let driverNumber = UserDefaults.standard.value(forKey: "DriverId") as? Int else { return }
         
         let jsonBody:Dictionary<String,Any> = [
-            "CustomerId": selectedCustomer?.CustomerId as Any,
+            "CustomerId": selectedCustomer?.customerID as Any,
             "RouteId": routeNumber ?? 0,
            "NumberOfSpecimens": count,
            "Status": statusPicker.selectedRow(inComponent: 0),
@@ -149,6 +148,7 @@ class DestinationDetailViewController: UIViewController, MKMapViewDelegate, CLLo
                                 Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false) { (_ ) in
                                     self.dismiss(animated: true, completion: {
                                         self.delegate?.refreshTable()
+                                        self.sendDriverLoc(driverID: self.driverId!)
                                         self.navigationController?.popViewController(animated: true)
                                     }) }
                             })
@@ -322,20 +322,20 @@ class DestinationDetailViewController: UIViewController, MKMapViewDelegate, CLLo
     
     
     
-    func getLocs(RouteNumber: Int)
-    {
-        RestManager.APIData(url: baseURL + getRouteDetail + "?RouteNumber=" + String(RouteNumber), httpMethod: RestManager.HttpMethod.post.self.rawValue, body: nil){
-            (Data, Error) in
-            if Error == nil{
-                do {
-                    self.routeDetails = try JSONDecoder().decode([Route].self, from: Data as! Data )
-                    self.getAllCoordsForRoute()
-                } catch let JSONErr{
-                    print(JSONErr.localizedDescription)
-                }
-            }
-        }
-    }
+//    func getLocs(RouteNumber: Int)
+//    {
+//        RestManager.APIData(url: baseURL + getRouteDetail + "?RouteNumber=" + String(RouteNumber), httpMethod: RestManager.HttpMethod.post.self.rawValue, body: nil){
+//            (Data, Error) in
+//            if Error == nil{
+//                do {
+//                    self.routeDetails = try JSONDecoder().decode([RouteDetail].self, from: Data as! Data )
+//                    self.getAllCoordsForRoute()
+//                } catch let JSONErr{
+//                    print(JSONErr.localizedDescription)
+//                }
+//            }
+//        }
+//    }
     
     func sendDriverLoc(driverID: Int)
     {
@@ -360,10 +360,10 @@ class DestinationDetailViewController: UIViewController, MKMapViewDelegate, CLLo
     
     func createAddress(entry: Int)-> String
     {
-        let streetAddress: String = (routeDetails?[0].Customer?[entry].StreetAddress ?? "this was empty ")
-        let city: String = (routeDetails?[0].Customer?[entry].City) ?? " this was empty "
-        let state: String = (routeDetails?[0].Customer?[entry].State) ?? " this was empty "
-        let ZIPint = (routeDetails?[0].Customer?[entry].Zip) ?? 0
+        let streetAddress: String = (routeDetails[0].customer[entry].streetAddress )
+        let city: String = (routeDetails[0].customer[entry].city)
+        let state: String = (routeDetails[0].customer[entry].state)
+        let ZIPint = (routeDetails[0].customer[entry].zip)
         let ZIP = String(ZIPint)
         let Seperator: String = ", "
         
@@ -396,7 +396,7 @@ class DestinationDetailViewController: UIViewController, MKMapViewDelegate, CLLo
         var coordsOfATA = [CLLocationCoordinate2D]()
         var ListOfAddresses = [String]()
         var coordToAppend = CLLocationCoordinate2D()
-        for i in Range(0...(routeDetails![0].Customer!.count-1))
+        for i in Range(0...((routeDetails[0].customer.count)-1))
         {
             print(i)
             addressToAdd = createAddress(entry: i)

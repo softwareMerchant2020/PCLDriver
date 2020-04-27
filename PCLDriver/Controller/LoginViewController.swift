@@ -31,7 +31,7 @@ class LoginViewController: UIViewController {
         }
         else{
        loginWithCredentials()
-    }
+        }
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -85,7 +85,7 @@ class LoginViewController: UIViewController {
                 "PhoneNumber": username,
                 "Password": password
             ]
-            RestManager.APIData(url: baseURL + driverLogin, httpMethod: RestManager.HttpMethod.post.self.rawValue, body: SerializedData(JSONObject: jsonBody)){Data,Error in
+            RestManager.APIData(url: baseURL + driverLoginAPI, httpMethod: RestManager.HttpMethod.post.self.rawValue, body: SerializedData(JSONObject: jsonBody)){Data,Error in
                 if Error == nil {
                     do {
                         let jsonData = try JSONSerialization.jsonObject(with: Data as! Data, options: .allowFragments) as! Dictionary<String,Any>

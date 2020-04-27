@@ -39,4 +39,13 @@ class Utilities {
           fatalError("Error updating keychain - \(error)")
         }
     }
+    static func validatePassword(pwd:String, newPwd:String) -> Bool{
+        if pwd == newPwd {
+            return true
+        }
+        else
+        {
+            return false
+        }
+    }
 }

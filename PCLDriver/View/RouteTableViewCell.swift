@@ -17,8 +17,8 @@ class RouteTableViewCell: UITableViewCell {
         // Initialization code
     }
     func setCellData(object:Customer){
-        customerName.text = object.CustomerName
-        let address:String = String(format: "%@, %@, %@, %d", object.StreetAddress ?? "",object.City ?? "", object.State ?? "", object.Zip ?? 0)
+        customerName.text = object.customerName
+        let address:String = String(format: "%@, %@, %@, %d", object.streetAddress ,object.city , object.state , object.zip )
         addressLabel.text = address
     }
     

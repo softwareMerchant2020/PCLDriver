@@ -19,7 +19,9 @@ class BiometricIDAuth {
 
     
     func canEvaluatePolicy() -> Bool {
-      return context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: nil)
+        let biometricPolicy = UserDefaults.standard.bool(forKey: "allowBiometrics")
+
+      return (context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: nil) && biometricPolicy)
     }
     func biometricType() -> BiometricType {
       let _ = context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: nil)
