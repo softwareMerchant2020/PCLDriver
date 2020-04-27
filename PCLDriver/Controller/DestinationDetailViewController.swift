@@ -222,7 +222,6 @@ class DestinationDetailViewController: UIViewController, MKMapViewDelegate, CLLo
         guard let driverId = UserDefaults.standard.value(forKey: "DriverId") as? Int else { return }
         
         let delayTime = DispatchTime.now() + 3
-        print("sending location")
         DispatchQueue.main.asyncAfter(deadline: delayTime, execute:{
             self.sendDriverLoc(driverID: driverId)})
         
@@ -232,7 +231,6 @@ class DestinationDetailViewController: UIViewController, MKMapViewDelegate, CLLo
     func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion)
     {
         positionStatus = true
-        print("entered")
         updateStatusClicked(self)
 //        sendDriverLoc(driverID: self.driverId ?? 3 )
     }
@@ -240,7 +238,6 @@ class DestinationDetailViewController: UIViewController, MKMapViewDelegate, CLLo
     func locationManager(_ manager: CLLocationManager, didExitRegion region: CLRegion)
     {
         positionStatus = false
-        print("exited")
         sendDriverLoc(driverID: self.driverId ?? 3) //get rid of hard code
 
     }
@@ -313,25 +310,19 @@ class DestinationDetailViewController: UIViewController, MKMapViewDelegate, CLLo
         var coordToAppend = CLLocationCoordinate2D()
         for i in Range(0...((routeDetails[0].customer.count)-1))
         {
-            print(i)
             addressToAdd = createAddress(entry: i)
             ListOfAddresses.append(addressToAdd)
         }
-        print("List of addresses",ListOfAddresses)
         
         for j in ListOfAddresses
         {
-            print(j)
             getCoordinate(addressString: j) { (CLLocationCoordinate2D, NSError) in
                 coordToAppend = CLLocationCoordinate2D
                 coordsOfATA.append(coordToAppend)
-                print("yf",coordsOfATA)
-                print(ListOfAddresses.count)
                 if ListOfAddresses.count>0
                 {
                     for k in coordsOfATA
                     {
-                        print(k)
                         let listOfDropOffs = [["title":"Pick Up Here!", "latitude":k.latitude, "longitude":k.longitude]]
                         self.createAnnot(locations: listOfDropOffs)
                     }
