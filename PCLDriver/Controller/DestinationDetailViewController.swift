@@ -128,12 +128,18 @@ class DestinationDetailViewController: UIViewController, MKMapViewDelegate, CLLo
         */
         let count = Int(specimenCountField.text!) ?? 0
         guard let driverNumber = UserDefaults.standard.value(forKey: "DriverId") as? Int else { return }
-        
+        var specStat:Int!
+        if positionStatus {
+            specStat = 6
+        }
+        else {
+            specStat = statusPicker.selectedRow(inComponent: 0)
+        }
         let jsonBody:Dictionary<String,Any> = [
             "CustomerId": selectedCustomer?.customerID as Any,
             "RouteId": routeNumber ?? 0,
            "NumberOfSpecimens": count,
-           "Status": statusPicker.selectedRow(inComponent: 0),
+           "Status": specStat as Any,
            "UpdateBy": driverNumber
         ]
         RestManager.APIData(url: baseURL + addUpdateTransactionStatus, httpMethod: RestManager.HttpMethod.post.self.rawValue, body: Utilities.SerializedData(JSONObject: jsonBody)){
@@ -149,7 +155,7 @@ class DestinationDetailViewController: UIViewController, MKMapViewDelegate, CLLo
                                     self.dismiss(animated: true, completion: {
                                         self.delegate?.refreshTable()
                                         self.sendDriverLoc(driverID: self.driverId!)
-                                        self.navigationController?.popViewController(animated: true)
+                                    self.navigationController?.popViewController(animated: true)
                                     }) }
                             })
                         }
@@ -251,7 +257,8 @@ class DestinationDetailViewController: UIViewController, MKMapViewDelegate, CLLo
     {
         positionStatus = true
         print("entered")
-        sendDriverLoc(driverID: self.driverId ?? 3 )
+        updateStatusClicked(self)
+//        sendDriverLoc(driverID: self.driverId ?? 3 )
         postLocalNotifications(eventTitle: "entered Pickup zone")
     }
     

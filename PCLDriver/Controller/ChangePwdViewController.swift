@@ -33,12 +33,23 @@ class ChangePwdViewController: UIViewController {
                     if Error == nil {
                         do {
                             let resultData = try JSONDecoder().decode(RequestResult.self, from: Data as! Data)
+                            if resultData.Result == "success" {
+                                
+                                DispatchQueue.main.async {
+                                    let alert = Utilities.getAlertControllerwith(title: "Change Password", message: resultData.Result)
+                                self.present(alert, animated: true, completion: {
+                                    Timer.scheduledTimer(withTimeInterval: 0.3, repeats: false) { (_ ) in
+                                        Utilities.logOutUser()
+                                        self.dismiss(animated: true, completion: nil)
+                                        self.navigationController?.popToRootViewController(animated: true)
+                                    }
+                                })
+                                }}
+                            else {
                                 DispatchQueue.main.async {
                                     let alert = Utilities.getAlertControllerwith(title: "Change Password", message: resultData.Result, alertActionTitle: "Ok")
-                                self.present(alert, animated: true)
-//                           perform only when the change password is true
-                                Utilities.logOutUser()
-                                self.navigationController?.popToRootViewController(animated: true)
+                                    self.present(alert, animated: true)
+                                }
                             }
                             
                         } catch let JSONErr{

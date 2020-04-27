@@ -84,14 +84,14 @@ extension RouteListViewController : UITableViewDelegate,UITableViewDataSource
         let cell = tableView.dequeueReusableCell(withIdentifier: "RouteTableViewCell", for: indexPath) as! RouteTableViewCell
         
         cell.setCellData(object: (customerDetails[0].customer[indexPath.row]))
-        if customerDetails[0].customer[indexPath.row].collectionStatus == "Collected" {
-            cell.backgroundColor = #colorLiteral(red: 0.7560525686, green: 0.4933606931, blue: 0.5651173446, alpha: 1)
-            cell.isUserInteractionEnabled = false
-        }
-        else {
-            cell.backgroundColor = UIColor.white
-            cell.isUserInteractionEnabled = true
-        }
+//        if customerDetails[0].customer[indexPath.row].collectionStatus == "Collected" {
+//            cell.backgroundColor = #colorLiteral(red: 0.7560525686, green: 0.4933606931, blue: 0.5651173446, alpha: 1)
+//            cell.isUserInteractionEnabled = false
+//        }
+//        else {
+//            cell.backgroundColor = UIColor.white
+//            cell.isUserInteractionEnabled = true
+//        }
         return cell
         
     }
