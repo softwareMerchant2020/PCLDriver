@@ -62,8 +62,6 @@ class DestinationDetailViewController: UIViewController, MKMapViewDelegate, CLLo
         // Do any additional setup after loading the view.
         
         self.getAllCoordsForRoute()
-       
-        requestPermissionNotifications()
     }
     func addLabName()  {
         labName.text = selectedCustomer?.customerName
@@ -230,28 +228,6 @@ class DestinationDetailViewController: UIViewController, MKMapViewDelegate, CLLo
         
     }
     
-    func postLocalNotifications(eventTitle:String)
-    {
-        let center = UNUserNotificationCenter.current()
-        
-        let content = UNMutableNotificationContent()
-        content.title = eventTitle
-        content.body = "prepare to be spyed on by your boss"
-        
-        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
-        
-        let notificationRequest:UNNotificationRequest = UNNotificationRequest(identifier: "Region", content: content, trigger: trigger)
-        
-        center.add(notificationRequest, withCompletionHandler: { (error) in
-            if let error = error {
-                // Something went wrong
-                print(error)
-            }
-            else{
-                print("added")
-            }
-        })
-    }
     
     func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion)
     {
@@ -259,7 +235,6 @@ class DestinationDetailViewController: UIViewController, MKMapViewDelegate, CLLo
         print("entered")
         updateStatusClicked(self)
 //        sendDriverLoc(driverID: self.driverId ?? 3 )
-        postLocalNotifications(eventTitle: "entered Pickup zone")
     }
     
     func locationManager(_ manager: CLLocationManager, didExitRegion region: CLRegion)
@@ -267,63 +242,10 @@ class DestinationDetailViewController: UIViewController, MKMapViewDelegate, CLLo
         positionStatus = false
         print("exited")
         sendDriverLoc(driverID: self.driverId ?? 3) //get rid of hard code
-        postLocalNotifications(eventTitle: "exited Pickup zone")
+
     }
     
-    func requestPermissionNotifications()
-    {
-        let application =  UIApplication.shared
-        
-        if #available(iOS 10.0, *) {
-            // For iOS 10 display notification (sent via APNS)
-            UNUserNotificationCenter.current().delegate = self
-            
-            let authOptions: UNAuthorizationOptions = [.alert, .badge, .sound]
-            UNUserNotificationCenter.current().requestAuthorization(options: authOptions) { (isAuthorized, error) in
-                if( error != nil ){
-                    print(error!)
-                }
-                else{
-                    if( isAuthorized ){
-                        print("authorized")
-                        NotificationCenter.default.post(Notification(name: Notification.Name("AUTHORIZED")))
-                    }
-                    else{
-                        let pushPreference = UserDefaults.standard.bool(forKey: "PREF_PUSH_NOTIFICATIONS")
-                        if pushPreference == false {
-                            let alert = UIAlertController(title: "Turn on Notifications", message: "Push notifications are turned off.", preferredStyle: .alert)
-                            alert.addAction(UIAlertAction(title: "Turn on notifications", style: .default, handler: { (alertAction) in
-                                guard let settingsUrl = URL(string: UIApplication.openSettingsURLString) else {
-                                    return
-                                }
-                                
-                                if UIApplication.shared.canOpenURL(settingsUrl) {
-                                    UIApplication.shared.open(settingsUrl, completionHandler: { (success) in
-                                        // Checking for setting is opened or not
-                                        print("Setting is opened: \(success)")
-                                    })
-                                }
-                                UserDefaults.standard.set(true, forKey: "PREF_PUSH_NOTIFICATIONS")
-                            }))
-                            alert.addAction(UIAlertAction(title: "No thanks.", style: .default, handler: { (actionAlert) in
-                                print("user denied")
-                                UserDefaults.standard.set(true, forKey: "PREF_PUSH_NOTIFICATIONS")
-                            }))
-                            let viewController = UIApplication.shared.keyWindow!.rootViewController
-                            DispatchQueue.main.async {
-                                viewController?.present(alert, animated: true, completion: nil)
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        else {
-            let settings: UIUserNotificationSettings =
-                UIUserNotificationSettings(types: [.alert, .badge, .sound], categories: nil)
-            application.registerUserNotificationSettings(settings)
-        }
-    }
+    
     
     //MARK: getting data for the routes
     
