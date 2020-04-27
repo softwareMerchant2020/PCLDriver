@@ -432,4 +432,14 @@ class DestinationDetailViewController: UIViewController, MKMapViewDelegate, CLLo
             }
         }
     }
+    @IBAction func getDirections(_ sender: UIButton)
+    {
+        let customerLocX = selectedCustomer?.custLat ?? 0
+        let customerLocY = selectedCustomer?.custLog ?? 0
+        let cutomerLocCoord = CLLocationCoordinate2DMake(customerLocX, customerLocY)
+        
+            let destPlaceMark = MKPlacemark(coordinate: cutomerLocCoord)
+            let destItem = MKMapItem(placemark: destPlaceMark)
+            destItem.openInMaps(launchOptions: [MKLaunchOptionsDirectionsModeKey:MKLaunchOptionsDirectionsModeWalking])
+    }
 }
