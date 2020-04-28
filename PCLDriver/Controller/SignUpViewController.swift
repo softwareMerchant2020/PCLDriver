@@ -34,7 +34,7 @@ class SignUpViewController: UIViewController {
                 "ConfirmPassword": confirmPwdField.text
             ]
             RestManager.APIData(url: baseURL + driverSignUpAPI, httpMethod: RestManager.HttpMethod.post.self.rawValue, body: Utilities.SerializedData(JSONObject: jsonBody)){Data,Error in
-                if Error == nil {
+                if Data != nil {
                     do {
                         let resultData = try JSONDecoder().decode(RequestResult.self, from: Data as! Data)
                             DispatchQueue.main.async {
