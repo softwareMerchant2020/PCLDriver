@@ -124,8 +124,7 @@ class LoginViewController: UIViewController {
         self.performSegue(withIdentifier: "showroutedetails", sender: self)
     }
     func saveUsernamePasswordInKeychain(username:String, password:String)  {
-        let hasLoginKey = UserDefaults.standard.bool(forKey: "hasLoginKey")
-        if !hasLoginKey && !username.isEmpty {
+        if !username.isEmpty {
           UserDefaults.standard.setValue(username, forKey: "username")
         }
           
@@ -144,6 +143,7 @@ class LoginViewController: UIViewController {
           
         // 6
         UserDefaults.standard.set(true, forKey: "hasLoginKey")
+        UserDefaults.standard.set(true, forKey: "allowBiometrics")
        
     }
     func checkLogin() -> (String,String) {
