@@ -595,7 +595,6 @@
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dRQ-JA-NCa">
                                 <rect key="frame" x="158" y="550" width="98" height="30"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="30" id="Q1A-Q5-W6u"/>
                                     <constraint firstAttribute="width" constant="98" id="dJv-V2-b7g"/>
                                 </constraints>
                                 <state key="normal" title="Get Directions"/>
@@ -606,6 +605,7 @@
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
+                            <constraint firstItem="WaP-ou-m18" firstAttribute="top" secondItem="dRQ-JA-NCa" secondAttribute="bottom" constant="19" id="0JS-24-Us5"/>
                             <constraint firstAttribute="trailing" secondItem="WaP-ou-m18" secondAttribute="trailing" constant="10" id="8dY-Sd-Jc2"/>
                             <constraint firstItem="ogs-xq-hsS" firstAttribute="leading" secondItem="NjU-rl-5WC" secondAttribute="leading" constant="15" id="9f0-GC-GTW"/>
                             <constraint firstItem="WaP-ou-m18" firstAttribute="leading" secondItem="0Sc-Wv-a3d" secondAttribute="leading" constant="10" id="Cut-2E-cis"/>
