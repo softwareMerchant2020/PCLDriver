@@ -47,8 +47,6 @@ class RouteListViewController: UIViewController {
                     dateFormatter.dateStyle = .none
                     dateFormatter.dateFormat = "H:mm a"
                     dateFormatter.locale = Locale(identifier: "en_US")
-                    print(Date())
-                    print(dateFormatter.date(from:"7:40 PM"))
                     
                     self.customer = self.customerDetails[0].customer.sorted(by: {
                         (dateFormatter.date(from: $0.pickUpTime)?.compare(dateFormatter.date(from: $1.pickUpTime) ?? Date())) == .orderedDescending })

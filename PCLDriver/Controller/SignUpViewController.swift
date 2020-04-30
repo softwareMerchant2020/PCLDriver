@@ -19,6 +19,7 @@ class SignUpViewController: UIViewController {
     }
 
     @IBAction func signUpClicked(_ sender: Any) {
+//        goToLoginView(with: "", password: "")
         if (phoneNumberField.text == "" || passwordField.text == "" || confirmPwdField.text == "") {
            let alert = Utilities.getAlertControllerwith(title: "Required", message: "All fields are required")
             self.present(alert, animated: true, completion: nil)
@@ -37,12 +38,23 @@ class SignUpViewController: UIViewController {
                 if Data != nil {
                     do {
                         let resultData = try JSONDecoder().decode(RequestResult.self, from: Data as! Data)
+                        if resultData.Result == "success" {
+                            DispatchQueue.main.async {
+                                let alert = Utilities.getAlertControllerwith(title: "Sign Up", message: "Sign Up success")
+                                self.present(alert, animated: true, completion: {
+                                    Timer.scheduledTimer(withTimeInterval: 0.3, repeats: false) { (_ ) in
+                                        self.dismiss(animated: true, completion: nil)
+                                        self.goToLoginView(with:self.phoneNumberField.text! , password: self.passwordField.text!)
+                                    }
+                                })
+                            }
+                        }
+                        else {
                             DispatchQueue.main.async {
                                 let alert = Utilities.getAlertControllerwith(title: "Sign Up", message: resultData.Result, alertActionTitle: "Ok")
                                 self.present(alert, animated: true)
-                                self.navigationController?.popViewController(animated: true)
+                            }
                         }
-                        
                     } catch let JSONErr{
                         DispatchQueue.main.async {
                             let alert = Utilities.getAlertControllerwith(title: "Sign Up", message: JSONErr.localizedDescription, alertActionTitle: "Ok")
@@ -52,5 +64,13 @@ class SignUpViewController: UIViewController {
                 }
             }
         }
+    }
+    func goToLoginView(with phoneNumber:String, password:String) {
+        self.navigationController?.popViewController(animated: true)
+
+        let loginVC = self.navigationController?.viewControllers[0] as! LoginViewController
+        print(loginVC)
+        loginVC.loginUsingUsernameAndPassword(username: phoneNumber, password: password)
+        
     }
 }
