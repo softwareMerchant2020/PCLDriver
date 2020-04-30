@@ -19,7 +19,7 @@ class RouteTableViewCell: UITableViewCell {
     }
     func setCellData(object:Customer){
         customerName.text = object.customerName
-        let address:String = String(format: "%@, %@, %@, %d", object.streetAddress ,object.city , object.state , object.zip )
+        let address:String = String(format: "%@, %@, %@, %@", object.streetAddress ,object.city , object.state , object.zip )
         addressLabel.text = address
         var str = object.pickUpTime
         for _ in 0...10{
