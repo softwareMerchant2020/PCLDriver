@@ -10,6 +10,7 @@ import UIKit
 
 class RouteTableViewCell: UITableViewCell {
 
+    @IBOutlet weak var timeLabel: UILabel!
     @IBOutlet weak var addressLabel: UILabel!
     @IBOutlet weak var customerName: UILabel!
     override func awakeFromNib() {
@@ -20,6 +21,7 @@ class RouteTableViewCell: UITableViewCell {
         customerName.text = object.customerName
         let address:String = String(format: "%@, %@, %@, %d", object.streetAddress ,object.city , object.state , object.zip )
         addressLabel.text = address
+        timeLabel.text = object.pickUpTime
     }
     
 }

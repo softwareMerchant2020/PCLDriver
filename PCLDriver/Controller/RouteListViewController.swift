@@ -12,6 +12,7 @@ class RouteListViewController: UIViewController {
     var customerDetails:[RouteDetail] = [RouteDetail]()
     var routeNumber:Int?
     var selectedIndexpath:IndexPath?
+    var customer:[Customer] = [Customer]()
     
     @IBOutlet weak var routeHeaderView: UIView!
     @IBOutlet var routeHeaderLabels: [UILabel]!
@@ -42,6 +43,16 @@ class RouteListViewController: UIViewController {
             if Error == nil{
                 do {
                     self.customerDetails = try JSONDecoder().decode([RouteDetail].self, from: Data as! Data )
+                    let dateFormatter = DateFormatter()
+                    dateFormatter.dateStyle = .none
+                    dateFormatter.dateFormat = "H:mm a"
+                    dateFormatter.locale = Locale(identifier: "en_US")
+                    print(Date())
+                    print(dateFormatter.date(from:"7:40 PM"))
+                    
+                    self.customer = self.customerDetails[0].customer.sorted(by: {
+                        (dateFormatter.date(from: $0.pickUpTime)?.compare(dateFormatter.date(from: $1.pickUpTime) ?? Date())) == .orderedDescending })
+                    print(self.customer)
                     self.loadTableView()
                 } catch let JSONErr{
                     print(JSONErr.localizedDescription)
@@ -77,13 +88,13 @@ class RouteListViewController: UIViewController {
 extension RouteListViewController : UITableViewDelegate,UITableViewDataSource
 {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        self.customerDetails[0].customer.count
+        self.customer.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "RouteTableViewCell", for: indexPath) as! RouteTableViewCell
         
-        cell.setCellData(object: (customerDetails[0].customer[indexPath.row]))
+        cell.setCellData(object: (self.customer[indexPath.row]))
 //        if customerDetails[0].customer[indexPath.row].collectionStatus == "Collected" {
 //            cell.backgroundColor = #colorLiteral(red: 0.7560525686, green: 0.4933606931, blue: 0.5651173446, alpha: 1)
 //            cell.isUserInteractionEnabled = false
