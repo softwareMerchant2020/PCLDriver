@@ -21,8 +21,8 @@ struct RouteDetail: Codable {
 // MARK: - Customer
 struct Customer: Codable {
     let customerID: Int
-    let customerName, streetAddress, city, state: String
-    let zip, specimensCollected: Int
+    let zip, customerName, streetAddress, city, state: String
+    let specimensCollected: Int
     let pickUpTime, collectionStatus: String
     let isSelected: Bool
     let custLat, custLog: Double

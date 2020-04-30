@@ -21,7 +21,11 @@ class RouteTableViewCell: UITableViewCell {
         customerName.text = object.customerName
         let address:String = String(format: "%@, %@, %@, %d", object.streetAddress ,object.city , object.state , object.zip )
         addressLabel.text = address
-        timeLabel.text = object.pickUpTime
+        var str = object.pickUpTime
+        for _ in 0...10{
+            str.removeFirst()
+        }
+        timeLabel.text = str
     }
     
 }

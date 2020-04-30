@@ -45,12 +45,11 @@ class RouteListViewController: UIViewController {
                     self.customerDetails = try JSONDecoder().decode([RouteDetail].self, from: Data as! Data )
                     let dateFormatter = DateFormatter()
                     dateFormatter.dateStyle = .none
-                    dateFormatter.dateFormat = "H:mm a"
+                    dateFormatter.dateFormat = "yyyy-MM-dd h:mm a"
                     dateFormatter.locale = Locale(identifier: "en_US")
                     
                     self.customer = self.customerDetails[0].customer.sorted(by: {
-                        (dateFormatter.date(from: $0.pickUpTime)?.compare(dateFormatter.date(from: $1.pickUpTime) ?? Date())) == .orderedDescending })
-                    print(self.customer)
+                        (dateFormatter.date(from: $0.pickUpTime) ?? Date() < (dateFormatter.date(from: $1.pickUpTime) ?? Date()))})
                     self.loadTableView()
                 } catch let JSONErr{
                     print(JSONErr.localizedDescription)
