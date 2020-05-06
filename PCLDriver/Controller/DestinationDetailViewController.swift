@@ -10,7 +10,7 @@ import UIKit
 import MapKit
 import CoreLocation
 
-class DestinationDetailViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDelegate, UNUserNotificationCenterDelegate, UIPickerViewDelegate, UIPickerViewDataSource
+class DestinationDetailViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDelegate, UNUserNotificationCenterDelegate, UIPickerViewDelegate, UIPickerViewDataSource, UITextFieldDelegate
 {
     
     @IBOutlet weak var statusPicker: UIPickerView!
@@ -47,6 +47,7 @@ class DestinationDetailViewController: UIViewController, MKMapViewDelegate, CLLo
         super.viewDidLoad()
 //        getLocs(RouteNumber: self.routeNumber ?? 0)
         specimenCountField.isHidden = true
+        specimenCountField.delegate = self
         logoutButton()
         addLabName()
         statusPicker.delegate = self
@@ -62,6 +63,10 @@ class DestinationDetailViewController: UIViewController, MKMapViewDelegate, CLLo
         // Do any additional setup after loading the view.
 //        requestPermissionNotifications()
         self.getAllCoordsForRoute()
+    }
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
     }
     func addLabName()  {
         labName.text = selectedCustomer?.customerName

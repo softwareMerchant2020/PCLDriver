@@ -9,19 +9,25 @@
 import UIKit
 import Foundation
 
-class SignUpViewController: UIViewController {
+class SignUpViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var phoneNumberField: UITextField!
     @IBOutlet weak var confirmPwdField: UITextField!
     @IBOutlet weak var passwordField: UITextField!
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationController?.isNavigationBarHidden = false
+        phoneNumberField.delegate = self
+        confirmPwdField.delegate = self
+        passwordField.delegate = self
     }
-
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
+    }
     @IBAction func signUpClicked(_ sender: Any) {
 //        goToLoginView(with: "", password: "")
         if (phoneNumberField.text == "" || passwordField.text == "" || confirmPwdField.text == "") {
-           let alert = Utilities.getAlertControllerwith(title: "Required", message: "All fields are required")
+            let alert = Utilities.getAlertControllerwith(title: "Required", message: "All fields are required", alertActionTitle: "Ok")
             self.present(alert, animated: true, completion: nil)
         }
         else if !(Utilities.validatePassword(pwd: passwordField.text!, newPwd: confirmPwdField.text!)) {
