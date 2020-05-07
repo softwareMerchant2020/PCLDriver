@@ -33,7 +33,7 @@
 
 /* Begin PBXFileReference section */
 		C089FEB724489ED800156972 /* Route.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Route.swift; sourceTree = "<group>"; };
-		EF057BBB243EC5640043D563 /* PCLDriver.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PCLDriver.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		EF057BBB243EC5640043D563 /* PCLDrivers.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PCLDrivers.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EF057BBE243EC5640043D563 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		EF057BC0243EC5640043D563 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		EF057BC2243EC5640043D563 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
@@ -80,7 +80,7 @@
 		EF057BBC243EC5640043D563 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				EF057BBB243EC5640043D563 /* PCLDriver.app */,
+				EF057BBB243EC5640043D563 /* PCLDrivers.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -164,7 +164,7 @@
 			);
 			name = PCLDriver;
 			productName = PCLDriver;
-			productReference = EF057BBB243EC5640043D563 /* PCLDriver.app */;
+			productReference = EF057BBB243EC5640043D563 /* PCLDrivers.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -381,14 +381,16 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = KKX8KEUZ6R;
 				INFOPLIST_FILE = PCLDriver/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.softwaremerchant.PCLDriver;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.softwaremerchant.PCL.PCLDrivers;
+				PRODUCT_NAME = PCLDrivers;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -399,14 +401,16 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = KKX8KEUZ6R;
 				INFOPLIST_FILE = PCLDriver/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.softwaremerchant.PCLDriver;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.softwaremerchant.PCL.PCLDrivers;
+				PRODUCT_NAME = PCLDrivers;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

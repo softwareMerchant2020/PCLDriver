@@ -33,6 +33,9 @@ class BiometricIDAuth {
       case .faceID:
         return .faceID
     
+      @unknown default:
+        return .none
+        
         }
     }
     func authenticateUser(completion: @escaping (String?) -> Void) {
