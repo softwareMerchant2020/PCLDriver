@@ -129,6 +129,8 @@ class DestinationDetailViewController: UIViewController, MKMapViewDelegate, CLLo
 4    Closed
 5    Other
         */
+        if let location = self.myCurrentLoc{
+        
         let count = Int(specimenCountField.text!) ?? 0
         guard let driverNumber = UserDefaults.standard.value(forKey: "DriverId") as? Int else { return }
         var specStat:Int!
@@ -168,6 +170,9 @@ class DestinationDetailViewController: UIViewController, MKMapViewDelegate, CLLo
                     print(JSONErr.localizedDescription)
                 }
             }
+        }
+        } else {
+            self.present(Alert(message: "Please allow location access in the settings for the app."), animated: true)
         }
     }
     
